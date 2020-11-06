@@ -1,0 +1,62 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A cool thing made with Glitch">
+
+    <title>Verne Socket</title>
+
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+      
+    <!-- import the webpage's client-side javascript file -->
+    <script src="/script.js" defer></script>
+    
+    
+    
+  </head>
+  <body>
+    
+    <div id="app">
+      <h1>Verne Socket a VVVV</h1>
+      <div>
+        <label for="slider01">slider01</label>
+        <input type="range" min="0" max="1" step="0.01" id="slider01" v-model="slider01"> 
+        <input disabled v-model="slider01" style="width: 2em">
+      </div>
+      
+      <div>
+        <label for="slider02">slider02</label>
+        <input type="range" min="0" max="1" step="0.01" id="slider02" v-model="slider02"> 
+        <input disabled v-model="slider02" style="width: 2em">
+      </div>
+      
+      <div>
+        <label for="slider03">slider03</label>
+        <input type="range" min="0" max="1" step="0.01" id="slider03" v-model="slider03"> 
+        <input disabled v-model="slider03" style="width: 2em">
+      </div>
+      
+      <div>
+        <button id="button01" @click="ClickedBut('button01')">
+          BUTTON01
+        </button>
+        <button id="button02" @click="ClickedBut('button02')">
+          BUTTON02
+        </button>
+        <button id="button03" @click="ClickedBut('button03')">
+          BUTTON03
+        </button>
+      </div>
+      
+      </div>
+  </body>
+</html>
