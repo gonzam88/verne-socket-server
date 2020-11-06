@@ -13,20 +13,40 @@
     <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css">
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-      
-    <!-- import the webpage's client-side javascript file -->
-    <script src="/script.js" defer></script>
+    
+    
+
     
     
     
   </head>
   <body>
     
-    <div id="app">
+    <div id="app" v-bind:style="{borderColor: color.hex}">
       <h1>Verne Socket a VVVV</h1>
+      <pre>id: {{id}}</pre>
+      
+      <br>
+      <div class="container">
+        
+        <div class="myData">
+            <div>
+        <label for="name">Nombre</label>
+        <input type="text" id="name" v-on:keyup="SendUpdate('nombre',localPlayer.nombre)" v-model="localPlayer.nombre">
+      </div>
+      
+      <div>
+        <label>Color</label> {{color.hex}}
+        <slider-picker v-model="color" @input="SendUpdate('color',color.hex)"/>
+      </div>
+      <br>
+      
+      <fieldset class="pad" data-width="180" data-height="180">
+          <legend>XY Pad</legend>
+          x : <input name="x" value=27>
+          y : <input name="y" value=80>
+      </fieldset>
+          
       <div>
         <label for="slider01">slider01</label>
         <input type="range" min="0" max="1" step="0.01" id="slider01" v-model="slider01"> 
@@ -44,19 +64,65 @@
         <input type="range" min="0" max="1" step="0.01" id="slider03" v-model="slider03"> 
         <input disabled v-model="slider03" style="width: 2em">
       </div>
-      
+      <br>
       <div>
-        <button id="button01" @click="ClickedBut('button01')">
+        <button id="button01" v-on:mousedown="SendUpdate('button01',1)" v-on:mouseup="SendUpdate('button01',0)">
           BUTTON01
         </button>
-        <button id="button02" @click="ClickedBut('button02')">
+        <button id="button02" v-on:mousedown="SendUpdate('button02',1)" v-on:mouseup="SendUpdate('button02',0)">
           BUTTON02
         </button>
-        <button id="button03" @click="ClickedBut('button03')">
+        <button id="button03" v-on:mousedown="SendUpdate('button03',1)" v-on:mouseup="SendUpdate('button03',0)">
           BUTTON03
         </button>
       </div>
+          
+        </div>
+        <div class="othersData">
+          <pre>Players: {{cantPlayers}}</pre>
+          <div class="list">
+            <div class="item" v-for="data in players" v-bind:style="{borderColor: data.color}">
+              <pre><strong>id</strong> {{data.id}}</pre>
+              <pre><strong>nombre</strong> {{data.nombre}}</pre>
+              <pre><strong>color</strong> {{data.color}}</pre>
+
+              <pre><strong>Pad X</strong> {{data.padx}}</pre>
+              <pre><strong>Pad Y</strong> {{data.pady}}</pre>
+
+              <pre><strong>Slider01</strong> {{data.slider01}}</pre>
+              <pre><strong>Slider02</strong> {{data.slider02}}</pre>
+              <pre><strong>Slider03</strong> {{data.slider03}}</pre>
+
+              <pre><strong>Button01</strong> {{data.button01}}</pre>
+              <pre><strong>Button02</strong> {{data.button02}}</pre>
+              <pre><strong>Button03</strong> {{data.button03}}</pre>
+
+              <!--<div v-for="(value,parameter) in data">
+
+                {{parameter}}: {{value}}
+              </div>-->
+
+            </div>
+          </div>
+          
+        </div>   
+      </div>
+      
       
       </div>
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+    <script src="https://coso.cloud/jQuery-Kontrol/js/jquery.kontrol.js"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-color@2.7.1/dist/vue-color.min.js"></script> <!-- vue-color -->
+      
+    <!-- import the webpage's client-side javascript file -->
+    <script src="/script.js" defer></script>
+    
   </body>
 </html>
