@@ -52,6 +52,7 @@ io.on('connection', (socket) => {
   
   socket.on("playerUpdate", (data)=>{
     players[data.id][data.parameter] = data.value // Guardo en en este jugador
+    console.log(data.value)
     socket.broadcast.emit("otherUpdate", data) // Le aviso a los demas players conectados
   })
   

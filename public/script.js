@@ -16,8 +16,7 @@ var app = new Vue({
     players: [],
     
     color:'#000000',
-    
-    localPlayer:{},
+    nombre: "",
     
     // borrar esto
     slider01:0,
@@ -60,6 +59,7 @@ var app = new Vue({
     
   },
   methods:{
+    
     resetPlayerArr:function(){
       this.players = []
     },
@@ -103,7 +103,7 @@ var app = new Vue({
 // MENSAJES DEL SERVIDOR
 socket.on('disconnect', function () {
    console.log('Client disconnecting');
-  app.resetPlayerArr();
+   app.resetPlayerArr();
 });
 
 socket.on("id",function(data){ // Recibo mi ID
@@ -128,6 +128,8 @@ socket.on("otherUpdate", function(data){
 })
 
 
+/*
+// OLD
 socket.on("valueChange", function(data){
   console.log("Server Request",data)
   app.serverRequest = true
@@ -136,7 +138,7 @@ socket.on("valueChange", function(data){
 
 socket.on("clickedBut", function(data){
   console.log("Server Request",data)
-})
+})*/
 
 
 

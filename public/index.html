@@ -32,7 +32,7 @@
         <div class="myData">
             <div>
         <label for="name">Nombre</label>
-        <input type="text" id="name" v-on:keyup="SendUpdate('nombre',localPlayer.nombre)" v-model="localPlayer.nombre">
+        <input type="text" id="name" @input="evt=>nombre=evt.target.value" v-on:keyup="SendUpdate('nombre', nombre)">
       </div>
       
       <div>
