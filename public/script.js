@@ -231,7 +231,7 @@ $(document).on("mouseup", function(e) {
   if (mouseDown) {
     $(this).removeClass("down");
     let currButton = e.target.id
-    app.SendUpdate(currButton,0)
+    app.SendUpdate(currButtonEle.id,0)
     $(currButtonEle).removeClass("down");
     mouseDown = false;
   }
