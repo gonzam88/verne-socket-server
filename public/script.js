@@ -1,41 +1,47 @@
 var socket = io();
 socket.emit("logged", "holis");
 
-var colorSlider = VueColor.Slider
+var colorSlider = VueColor.Slider;
+
+let defaultProps = {
+  hex: '#' + Math.floor(Math.random()*16777215).toString(16)
+}
 
 var app = new Vue({
-  el: '#app',
+  el: "#app",
   components: {
-    'slider-picker': colorSlider,
+    "slider-picker": colorSlider
   },
   data: {
     showOthers: false,
-    
-    id:-1,
+
+    id: -1,
     cantPlayers: 0,
     players: [],
-    
-    color:'#000000',
+
+    color: defaultProps,
     nombre: "",
-    
+
     // borrar esto
-    slider01:0,
-    slider02:0,
-    slider03:0,
-    
-    conectados:0
-    
+    slider01: 0,
+    slider02: 0,
+    slider03: 0,
+
+    conectados: 0,
+
+    showClient: true,
+    showAdmin: false
   },
-  watch:{
-    slider01:function(val){
-      this.SendUpdate("slider01", val)
+  watch: {
+    slider01: function(val) {
+      this.SendUpdate("slider01", val);
     },
-    slider02:function(val){
-      this.SendUpdate("slider02", val)
+    slider02: function(val) {
+      this.SendUpdate("slider02", val);
     },
-    slider03:function(val){
-      this.SendUpdate("slider03", val)
-    },
+    slider03: function(val) {
+      this.SendUpdate("slider03", val);
+    }
     /*slider01:function(){
       if(this.serverRequest){this.serverRequest = false; return}
       
@@ -55,78 +61,81 @@ var app = new Vue({
       socket.emit("valueChange", {parameter:"slider03",value:this.slider03})
     },*/
   },
-  computed:{
-    
-  },
-  methods:{
-    
-    resetPlayerArr:function(){
-      this.players = []
+  computed: {},
+  methods: {
+    resetPlayerArr: function() {
+      this.players = [];
     },
-    newPlayer: function(data){
-      console.log("newPlayer", data)
-      this.players.push(data)
-      this.cantPlayers++
+    newPlayer: function(data) {
+      console.log("newPlayer", data);
+      this.players.push(data);
+      this.cantPlayers++;
     },
-    
-    deletePlayer: function(data){
-      console.log("deletePlayer", data)
+
+    deletePlayer: function(data) {
+      console.log("deletePlayer", data);
       this.players.find((o, i) => {
-        if (typeof(o) != "undefined" && o.id == data) {
-            this.players.splice(i,1)
-            return true; // stop searching
-          }
+        if (typeof o != "undefined" && o.id == data) {
+          this.players.splice(i, 1);
+          return true; // stop searching
+        }
       });
 
-      
-      app.cantPlayers--
+      app.cantPlayers--;
     },
-    
-    SendUpdate:function(_parameter, _value){
-      socket.emit("playerUpdate", {id: this.id, parameter: _parameter, value: _value})
+
+    SendUpdate: function(_parameter, _value) {
+      socket.emit("playerUpdate", {
+        id: this.id,
+        parameter: _parameter,
+        value: _value
+      });
     },
-    
-    OtherUpdate:function(data){
+
+    OtherUpdate: function(data) {
       this.players.find((o, i) => {
-        if (typeof(o) != "undefined" && o.id == data.id) {
+        if (typeof o != "undefined" && o.id == data.id) {
           //this.players[i][data.parameter] = data.value
           this.$set(this.players[i], data.parameter, data.value);
-          console.log(this.players[i], data.parameter,data.value)  
+          console.log(this.players[i], data.parameter, data.value);
           return true; // stop searching
-          }
+        }
       });
-    },
-  }
-})
+    }
+  },
 
-
-// MENSAJES DEL SERVIDOR
-socket.on('disconnect', function () {
-   console.log('Client disconnecting');
-   app.resetPlayerArr();
 });
 
-socket.on("id",function(data){ // Recibo mi ID
-  console.log("id", data)
-  app.id = data
-})
+// MENSAJES DEL SERVIDOR
+socket.on("disconnect", function() {
+  console.log("Client disconnecting");
+  app.resetPlayerArr();
+});
 
+socket.on("id", function(data) {
+  // Recibo mi ID
+  console.log("id", data);
+  app.id = data;
+  
+  // Envio mi color
+  app.SendUpdate('color', app.color.hex)
+});
 
-socket.on("newPlayer", function(data){ // Un player nuevo
-  console.log("newPlayer", data)
-  app.newPlayer(data)
-})
+socket.on("newPlayer", function(data) {
+  // Un player nuevo
+  console.log("newPlayer", data);
+  app.newPlayer(data);
+});
 
-socket.on("deletePlayer",function(data){ // Un player se fue y lo borro de la lista
-  app.deletePlayer(data)
-})
+socket.on("deletePlayer", function(data) {
+  // Un player se fue y lo borro de la lista
+  app.deletePlayer(data);
+});
 
-
-socket.on("otherUpdate", function(data){
-  console.log("otherUpdate", data)
-  app.OtherUpdate(data)
-})
-
+socket.on("otherUpdate", function(data) {
+  console.log("otherUpdate", data);
+  app.OtherUpdate(data);
+});
 
 /*
 // OLD
@@ -140,27 +149,90 @@ socket.on("clickedBut", function(data){
   console.log("Server Request",data)
 })*/
 
-
-
 // admin url get
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-if(urlParams.has("admin")){
-  app._data.admin=true
+function getQueryParams(qs) {
+  qs = qs.split("+").join(" ");
+
+  var params = {},
+    tokens,
+    re = /[?&]?([^=]+)=([^&]*)/g;
+
+  while ((tokens = re.exec(qs))) {
+    params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+  }
+  return params;
 }
 
 $(function() {
-    var $pad = $(".pad")
-      .xy({
-        displayPrevious:false,
-        min : -100,
-        max : 100,
-        fgColor:"#222222",
-        bgColor:"#EEEEEE", 
-        change : function (value) {
-            console.log("change : ", value);
-          app.SendUpdate("padx", value[0])
-          app.SendUpdate("pady", value[1])
-        }
-    }).css({'border':'1px solid #BBB'});
-})
+  var $pad = $(".pad")
+    .xy({
+      displayPrevious: false,
+      min: -100,
+      max: 100,
+      fgColor: "#222222",
+      bgColor: "#EEEEEE",
+      change: function(value) {
+        console.log("change : ", value);
+        app.SendUpdate("padx", value[0]);
+        app.SendUpdate("pady", value[1]);
+      }
+    })
+    .css({ border: "1px solid #BBB" });
+
+  var query = getQueryParams(document.location.search);
+  console.log(query);
+  app.showAdmin = typeof query.admin != "undefined" ? query.admin : false;
+  app.showClient = typeof query.client != "undefined" ? query.client : true;
+});
+
+var currButton
+var currButtonEle
+var mouseDown = false
+
+
+$(".btn").on("touchstart mousedown", function(e) {
+  var e = event || window.event;
+  e.preventDefault && e.preventDefault();
+  e.stopPropagation && e.stopPropagation();
+  let but = e.target.id;
+  currButtonEle = e.target;
+  $(this).addClass("down");
+
+  mouseDown = true;
+  currButton = e.target.id;
+  app.SendUpdate(currButton,1)
+  
+});
+
+$(".btn").on("touchend touchcancel", function(e) {
+  var e = event || window.event;
+  e.preventDefault && e.preventDefault();
+  e.stopPropagation && e.stopPropagation();
+  
+  let currButton = e.target.id
+  $(this).removeClass("down");
+
+  mouseDown = false;
+   app.SendUpdate(currButton,0)
+});
+
+/*
+$(".btn").on("mouseup", function(e) {
+  if (!mouseDown) {
+    var e = event || window.event;
+    e.preventDefault && e.preventDefault();
+    e.stopPropagation && e.stopPropagation();
+    $(this).removeClass("down");
+    mouseDown = false;
+  }
+});*/
+
+$(document).on("mouseup", function(e) {
+  if (mouseDown) {
+    $(this).removeClass("down");
+    let currButton = e.target.id
+    app.SendUpdate(currButton,0)
+    $(currButtonEle).removeClass("down");
+    mouseDown = false;
+  }
+});

@@ -1,89 +1,116 @@
 /* this file is loaded by index.html and styles the page */
 
-
 body {
   font-family: sans-serif;
-  font-size:28px;
-    margin: 0;
+  font-size: 20px;
+  margin: 0;
 }
-h1{
-  margin-top:0;
-  margin-bottom:0;
+h1 {
+  margin-top: 0;
+  margin-bottom: 0;
   font-size: 1.4em;
 }
-pre{
-  margin: 0
+pre {
+  margin: 0;
 }
-.nombre{
-  font-weight:bold;
+.nombre {
+  font-weight: bold;
   text-transform: uppercase;
 }
-ul{
-  list-style: none
+ul {
+  list-style: none;
 }
-li{
-  padding:5px;
-  margin:10px;
+li {
+  padding: 5px;
+  margin: 10px;
 }
-.grupo{
-  padding:10px;
-  
+.grupo {
+  padding: 10px;
 }
-li:hover, .grupo:hover{
-  background:slateblue;
-  color:white
+li:hover,
+.grupo:hover {
+  background: slateblue;
+  color: white;
 }
-textarea{
+textarea {
   font-family: sans-serif;
-  width:100%;
+  width: 100%;
   height: 300px;
-  font-size:18px
+  font-size: 18px;
 }
-.mezclarBut{
-  font-size:40px
+.mezclarBut {
+  font-size: 40px;
 }
 
-.admin{
+.admin {
   padding: 0 30px 20px;
   border: 10px dashed grey;
 }
-label{
-  color:grey
+label {
+  color: grey;
 }
-.subconfig label{
-  font-size: 16px
-}
-
-.listaParticipantxs,.listaGrupos{
-  display:flex;
-  flex-wrap:wrap
+.subconfig label {
+  font-size: 16px;
 }
 
-#app{
+.listaParticipantxs,
+.listaGrupos {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#app {
   padding: 20px;
   border: 20px solid rgb(0, 0, 0);
   height: calc(100vh - 80px);
 }
-.container{
-  display:flex;
+.container {
+  display: flex;
   display: flex;
   height: calc(100% - 89px);
 }
-.myData{
-  min-width: 420px;
+.myData {
+  /*min-width: 420px;*/
 }
-.myData, .othersData{
+.myData,
+.othersData {
   height: 100%;
   overflow-y: auto;
   padding-right: 5px;
 }
-.list{
+.list {
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
 }
-.othersData .item{
+.othersData .item {
   font-size: 14px;
   border: 5px solid rgb(0, 0, 0);
   padding: 5px;
   margin: 5px;
+}
+
+.vc-slider {
+  width: unset !important;
+}
+
+.btn {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  border: 1px solid;
+  display: inline-block;
+  padding: 5px;
+  color: grey;
+  margin-top: 5px;
+
+  position: relative;
+  top:0px;
+}
+.btn:hover {
+  color: #000;
+}
+.btn.down{
+  top: 2px;
 }
