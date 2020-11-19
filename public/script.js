@@ -183,6 +183,7 @@ $(function() {
   console.log(query);
   app.showAdmin = typeof query.admin != "undefined" ? query.admin : false;
   app.showClient = typeof query.client != "undefined" ? query.client : true;
+  app.showClient = app.showClient === "0" ? false : app.showClient
 });
 
 var currButton
