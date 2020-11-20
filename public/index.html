@@ -133,8 +133,9 @@
               <pre><strong>nombre</strong> {{data.nombre}}</pre>
               <pre><strong>color</strong> {{data.color}}</pre>
 
-              <pre><strong>Pad X</strong> {{data.padx}}</pre>
-              <pre><strong>Pad Y</strong> {{data.pady}}</pre>
+              <pre ><strong>Pad X</strong> <span v-if="typeof(data.pad) != 'undefined'">{{data.pad[0]}}</span></pre>
+              <pre ><strong>Pad Y</strong> <span v-if="typeof(data.pad) != 'undefined'">{{data.pad[1]}}</span></pre>
+
 
               <pre><strong>Slider01</strong> {{data.slider01}}</pre>
               <pre><strong>Slider02</strong> {{data.slider02}}</pre>

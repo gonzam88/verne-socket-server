@@ -173,8 +173,9 @@ $(function() {
       bgColor: "#EEEEEE",
       change: function(value) {
         console.log("change : ", value);
-        app.SendUpdate("padx", value[0]);
-        app.SendUpdate("pady", value[1]);
+        // app.SendUpdate("padx", value[0]);
+        // app.SendUpdate("pady", value[1]);
+        app.SendUpdate("pad", [value[0], value[1]]);
       }
     })
     .css({ border: "1px solid #BBB" });
