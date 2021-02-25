@@ -6,7 +6,12 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 // landing page
 router.get('/', (req,res)=>{
-    res.render('welcome');
+  if(req.isAuthenticated()) {
+      res.redirect('/experiencia');
+  }else{
+      res.render('home');
+  }
+
 })
 
 // dashboard

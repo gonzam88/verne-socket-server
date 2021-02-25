@@ -1,27 +1,4 @@
-
 <%- include('navbar'); %>
-<!-- <h1> Login </h1>
-<form action="/login" method="POST">
-<div>
-<label for="email">Email</label>
-<input
-type="email"
-name="email"
-placeholder="Enter Email"
-/>
-</div>
-<div>
-    <label for="password">Password</label>
-    <input
-      type="password"
-      name="password"
-      placeholder="Enter Password"
-    />
-
-</div>
-<button type="submit" class="btn btn-primary btn-block">Login</button>
-</form> -->
-
 
 <section class="container">
      <div class="columns is-multiline">
@@ -50,55 +27,11 @@ placeholder="Enter Email"
                  />
 
              </div>
-             <button type="submit"  class="button is-block is-black is-fullwidth is-normal">
-               Login
-             </button>
+             <button type="submit"  class="button is-block is-black is-fullwidth is-normal">Login</button>
+             <br />
+              <small><em>No tenés cuenta? Registrate <a href='/registrar'>acá</a></em></small>
              </form>
 
-             <!--
-             <form action="/registrar" method="POST">
-             <div class="field">
-                 <input
-                   class="input is-normal"
-                   type="name"
-                   name="name"
-                   placeholder="Nombre"
-                   value="<%= typeof name != 'undefined' ? name : '' %>"
-                 />
-             </div>
-             <div class="field">
-                 <input
-                   class="input is-normal"
-                   type="email"
-                   name="email"
-                   placeholder="Email"
-                   value="<%= typeof email != 'undefined' ? email : '' %>"
-                 />
-               </div>
-               <div class="field">
-                 <input
-                   class="input is-normal"
-                   type="password"
-                   name="password"
-                   placeholder="Contraseña"
-                   value="<%= typeof password != 'undefined' ? password : '' %>"
-                 />
-               </div>
-               <div class="field">
-                 <input
-                   class="input is-normal"
-                   type="password"
-                   name="password2"
-                   placeholder="Confirmá Contraseña"
-                   value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
-                 />
-               </div>
-               <button type="submit"  class="button is-block is-black is-fullwidth is-normal">
-                 Crear usuario
-               </button>
-               <br />
-                <small><em>Ya estás registrado? Logueate <a href='/login'>acá</a></em></small>
-             </form> -->
 
            </div>
          </div>
