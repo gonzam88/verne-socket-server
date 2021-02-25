@@ -1,54 +1,5 @@
-<!-- <h1>registrar</h1>
-<form action="/registrar" method="POST">
-<div>
-    <label for="name">Name</label>
-    <input
-      type="name"
-      name="name"
-      placeholder="Enter Name"
-      value="<%= typeof name != 'undefined' ? name : '' %>"
-    />
+<%- include('navbar'); %>
 
-</div>
-<div>
-    <label for="email">Email</label>
-    <input
-      type="email"
-      name="email"
-      placeholder="Enter Email"
-      value="<%= typeof email != 'undefined' ? email : '' %>"
-    />
-  </div>
-  <div >
-    <label for="password">Password</label>
-    <input
-      type="password"
-      name="password"
-      placeholder="Create Password"
-      value="<%= typeof password != 'undefined' ? password : '' %>"
-    />
-  </div>
-  <div >
-    <label for="password2">Confirm Password</label>
-    <input
-      type="password"
-      name="password2"
-      placeholder="Confirm Password"
-      value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
-    />
-  </div>
-  <button type="submit" class="btn btn-primary btn-block">
-    registrar
-  </button>
-</form>
-<p >Have An Accountt? <a href="/login">Login</a></p> -->
-
-
-
-
-
-
-<section class="container">
      <div class="columns is-multiline">
        <div class="column is-8 is-offset-2 register">
          <div class="columns">
@@ -65,7 +16,7 @@
              <form action="/registrar" method="POST">
              <div class="field">
                  <input
-                   class="input is-medium"
+                   class="input is-normal"
                    type="name"
                    name="name"
                    placeholder="Nombre"
@@ -74,7 +25,7 @@
              </div>
              <div class="field">
                  <input
-                   class="input is-medium"
+                   class="input is-normal"
                    type="email"
                    name="email"
                    placeholder="Email"
@@ -83,7 +34,7 @@
                </div>
                <div class="field">
                  <input
-                   class="input is-medium"
+                   class="input is-normal"
                    type="password"
                    name="password"
                    placeholder="Contraseña"
@@ -92,61 +43,23 @@
                </div>
                <div class="field">
                  <input
-                   class="input is-medium"
+                   class="input is-normal"
                    type="password"
                    name="password2"
                    placeholder="Confirmá Contraseña"
                    value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
                  />
                </div>
-               <button type="submit"  class="button is-block is-black is-fullwidth is-medium">
+               <button type="submit"  class="button is-block is-black is-fullwidth is-normal">
                  Crear usuario
                </button>
+               <br />
+                <small><em>Ya estás registrado? Logueate <a href='/login'>acá</a></em></small>
              </form>
 
-             <!-- <form>
-               <div class="field">
-                 <div class="control">
-                   <input class="input is-medium" type="text" placeholder="Name">
-                 </div>
-               </div>
-
-               <div class="field">
-                 <div class="control">
-                   <input class="input is-medium" type="email" placeholder="Email">
-                 </div>
-               </div>
-               <button class="button is-block is-black is-fullwidth is-medium">Submit</button>
-               <br />
-
-             </form> -->
            </div>
          </div>
        </div>
-       <div class="column is-8 is-offset-2">
-         <br>
-         <nav class="level">
-           <div class="level-left">
-             <div class="level-item">
-               <span class="icon">
-                 <i class="fab fa-twitter"></i>
-               </span> &emsp;
-               <span class="icon">
-                 <i class="fab fa-facebook"></i>
-               </span> &emsp;
-               <span class="icon">
-                 <i class="fab fa-instagram"></i>
-               </span> &emsp;
-               <span class="icon">
-                 <i class="fab fa-github"></i>
-               </span> &emsp;
-               <span class="icon">
-                 <i class="fas fa-envelope"></i>
-               </span>
-             </div>
-           </div>
 
-         </nav>
-       </div>
      </div>
    </section>

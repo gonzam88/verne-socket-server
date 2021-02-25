@@ -1,5 +1,6 @@
-<h1> Login </h1>
-<%- include ('./partials/messages') %>
+
+<%- include('navbar'); %>
+<!-- <h1> Login </h1>
 <form action="/login" method="POST">
 <div>
 <label for="email">Email</label>
@@ -19,5 +20,89 @@ placeholder="Enter Email"
 
 </div>
 <button type="submit" class="btn btn-primary btn-block">Login</button>
+</form> -->
 
-</form>
+
+<section class="container">
+     <div class="columns is-multiline">
+       <div class="column is-8 is-offset-2 register">
+         <div class="columns">
+           <div class="column right has-text-centered">
+             <h1 class="title is-4">Logueate</h1>
+             <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit</p>
+             <%- include ('./partials/messages') %>
+
+             <form action="/login" method="POST">
+             <div class="field">
+             <input
+             class="input is-normal"
+             type="email"
+             name="email"
+             placeholder="Email"
+             />
+             </div>
+             <div class="field">
+                 <input
+                   class="input is-normal"
+                   type="password"
+                   name="password"
+                   placeholder="Contraseña"
+                 />
+
+             </div>
+             <button type="submit"  class="button is-block is-black is-fullwidth is-normal">
+               Login
+             </button>
+             </form>
+
+             <!--
+             <form action="/registrar" method="POST">
+             <div class="field">
+                 <input
+                   class="input is-normal"
+                   type="name"
+                   name="name"
+                   placeholder="Nombre"
+                   value="<%= typeof name != 'undefined' ? name : '' %>"
+                 />
+             </div>
+             <div class="field">
+                 <input
+                   class="input is-normal"
+                   type="email"
+                   name="email"
+                   placeholder="Email"
+                   value="<%= typeof email != 'undefined' ? email : '' %>"
+                 />
+               </div>
+               <div class="field">
+                 <input
+                   class="input is-normal"
+                   type="password"
+                   name="password"
+                   placeholder="Contraseña"
+                   value="<%= typeof password != 'undefined' ? password : '' %>"
+                 />
+               </div>
+               <div class="field">
+                 <input
+                   class="input is-normal"
+                   type="password"
+                   name="password2"
+                   placeholder="Confirmá Contraseña"
+                   value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
+                 />
+               </div>
+               <button type="submit"  class="button is-block is-black is-fullwidth is-normal">
+                 Crear usuario
+               </button>
+               <br />
+                <small><em>Ya estás registrado? Logueate <a href='/login'>acá</a></em></small>
+             </form> -->
+
+           </div>
+         </div>
+       </div>
+
+     </div>
+   </section>
