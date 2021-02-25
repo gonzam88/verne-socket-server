@@ -1,7 +1,6 @@
-/* this file is loaded by index.html and styles the page */
-
 body {
   font-family: sans-serif;
+  background: red;
   font-size: 20px;
   margin: 0;
 }
