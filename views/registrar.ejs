@@ -1,5 +1,4 @@
-<h1>registrar</h1>
-<%- include ('./partials/messages') %>
+<!-- <h1>registrar</h1>
 <form action="/registrar" method="POST">
 <div>
     <label for="name">Name</label>
@@ -42,4 +41,112 @@
     registrar
   </button>
 </form>
-<p >Have An Accountt? <a href="/login">Login</a></p>
+<p >Have An Accountt? <a href="/login">Login</a></p> -->
+
+
+
+
+
+
+<section class="container">
+     <div class="columns is-multiline">
+       <div class="column is-8 is-offset-2 register">
+         <div class="columns">
+           <div class="column left">
+             <h1 class="title is-3">
+               Soquete Experience
+             </h1>
+             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis ex deleniti aliquam tempora libero excepturi vero soluta odio optio sed.</p>
+           </div>
+           <div class="column right has-text-centered">
+             <h1 class="title is-4">Registrate</h1>
+             <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit</p>
+             <%- include ('./partials/messages') %>
+             <form action="/registrar" method="POST">
+             <div class="field">
+                 <input
+                   class="input is-medium"
+                   type="name"
+                   name="name"
+                   placeholder="Nombre"
+                   value="<%= typeof name != 'undefined' ? name : '' %>"
+                 />
+             </div>
+             <div class="field">
+                 <input
+                   class="input is-medium"
+                   type="email"
+                   name="email"
+                   placeholder="Email"
+                   value="<%= typeof email != 'undefined' ? email : '' %>"
+                 />
+               </div>
+               <div class="field">
+                 <input
+                   class="input is-medium"
+                   type="password"
+                   name="password"
+                   placeholder="Contraseña"
+                   value="<%= typeof password != 'undefined' ? password : '' %>"
+                 />
+               </div>
+               <div class="field">
+                 <input
+                   class="input is-medium"
+                   type="password"
+                   name="password2"
+                   placeholder="Confirmá Contraseña"
+                   value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
+                 />
+               </div>
+               <button type="submit"  class="button is-block is-black is-fullwidth is-medium">
+                 Crear usuario
+               </button>
+             </form>
+
+             <!-- <form>
+               <div class="field">
+                 <div class="control">
+                   <input class="input is-medium" type="text" placeholder="Name">
+                 </div>
+               </div>
+
+               <div class="field">
+                 <div class="control">
+                   <input class="input is-medium" type="email" placeholder="Email">
+                 </div>
+               </div>
+               <button class="button is-block is-black is-fullwidth is-medium">Submit</button>
+               <br />
+
+             </form> -->
+           </div>
+         </div>
+       </div>
+       <div class="column is-8 is-offset-2">
+         <br>
+         <nav class="level">
+           <div class="level-left">
+             <div class="level-item">
+               <span class="icon">
+                 <i class="fab fa-twitter"></i>
+               </span> &emsp;
+               <span class="icon">
+                 <i class="fab fa-facebook"></i>
+               </span> &emsp;
+               <span class="icon">
+                 <i class="fab fa-instagram"></i>
+               </span> &emsp;
+               <span class="icon">
+                 <i class="fab fa-github"></i>
+               </span> &emsp;
+               <span class="icon">
+                 <i class="fas fa-envelope"></i>
+               </span>
+             </div>
+           </div>
+
+         </nav>
+       </div>
+     </div>
+   </section>
