@@ -134,6 +134,21 @@ socket.on("otherUpdate", function(data) {
   app.OtherUpdate(data);
 });
 
+
+// Logica Juego
+socket.on("juego:espera", function(data) {
+  console.log("ENTRE A SALA DE ESPERA", data)
+})
+socket.on("juego:countdown", function(data) {
+  console.log("ESTA POR COMENZAR EL JUEGO", data)
+})
+socket.on("juego:comienza", function(data) {
+  console.log("COMIENZA EL JUEGO", data)
+})
+socket.on("juego:termino", function(data) {
+  console.log("TERMINÓ EL JUEGO", data)
+})
+
 /*
 // OLD
 socket.on("valueChange", function(data){

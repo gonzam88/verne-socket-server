@@ -26,9 +26,15 @@ const UserSchema  = new mongoose.Schema({
   color:{
       type: String,
       default: "#ffffff"
-  }
+  },
+  participaciones:[
+    {
+      date : Date,
+      puntos : Number
+    }
+  ]
 
 });
-const User= mongoose.model('User',UserSchema);
+const User = mongoose.model('User',UserSchema);
 
 module.exports = User;

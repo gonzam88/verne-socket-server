@@ -89,6 +89,29 @@ app.use('/', require('./routes/index'));
 app.listen(process.env.EXPRESSPORT);
 
 
+
+
+
+
+// **************
+// SETTINGS JUEGO
+// **************
+var juego = {
+  personasPorTurno: 2,
+  countdown: 5, // en segundos, countdown cuando el juego está por arrancar
+  duracion: 10, // en segundos, duracion del juego
+  cooldown: 2, // en segundos, tiempo de espera antes de arrancar un nuevo juego
+  state: 0,
+  countdownEnd: 0, // timestamp de cuando termina el countdown
+}
+
+// states room juego
+// 0 - recibiendo jugadores
+// 1 - recibio jugadores, arranca countdown
+// 2 - juego iniciado
+// 3 - juego terminado (cooldown)
+
+
 // **************
 // SOCKET SERVER
 // **************
@@ -102,18 +125,7 @@ io.use(passportSocketIo.authorize({
   cookieParser: cookieParser
 }));
 
-// var eventSocket = io.of('/events');
-// // on connection event
-// eventSocket.on('connection', function(socket) {
-//
-//   // example 'event1', with an object. Could be triggered by socket.io from the front end
-//   socket.on('event1', function(eventData) {
-//   	// user data from the socket.io passport middleware
-//     if (socket.request.user && socket.request.user.logged_in) {
-//       console.log(socket.request.user);
-//     }
-//   });
-// });
+
 
 const User = require('./models/user');
 var players = []
@@ -146,6 +158,12 @@ io.on('connection', (socket) => {
 
     console.log("Nuevo player", userId, "Players online", Object.keys(players).length)
     console.log(players)
+
+    // agrego este nuevo jugador a la sala de espera
+    // TODO chequear si cumple requisito para jugar
+    socket.join('espera');
+    socket.emit("juego:espera")
+    PuedeIniciarJuego()
 
 
     socket.on('disconnect', () => {
@@ -181,6 +199,61 @@ io.on('connection', (socket) => {
   }
 })
 
+
+
+function PuedeIniciarJuego() {
+  io.in('espera').clients((error, clients) => {
+    if (error) throw error;
+
+    if (clients.length >= juego.personasPorTurno && juego.state == 0) {
+      console.log("Moviendo a los jugadores a la sala de Juego.")
+      clients.forEach(function(client){
+        let clientSocket = io.sockets.sockets[client]
+        clientSocket.leave("espera")
+        clientSocket.join("juego")
+      })
+      juego.state = 1 // arranca el countdown
+      juego.countdownEnd = Date.now() + (juego.countdown * 1000)
+
+      // les aviso y les paso el timestamp de cuando arranca el juego
+      io.in("juego").emit("juego:countdown", {
+        countdown: juego.countdownEnd
+      });
+      setTimeout(IniciarJuego, juego.countdown * 1000);
+    }
+  });
+}
+
+function IniciarJuego() {
+  // TODO volver a chequear la cantidad de jugadores
+  console.log("empezó el juego")
+  juego.state = 2 // arranca el juego
+  io.in("juego").emit("juego:comienza", {
+    duracion: juego.duracion
+  });
+  setTimeout(TerminarJuego, juego.duracion * 1000);
+}
+
+function TerminarJuego() {
+  console.log("terminó el juego")
+  io.in("juego").emit("juego:termino");
+  // vacio el room Juego
+  io.in('juego').clients((error, clients) => {
+    if (error) throw error;
+    clients.forEach(function(client){
+      let clientSocket = io.sockets.sockets[client]
+      clientSocket.leave("juego")
+    })
+  })
+
+  juego.state = 3 // termino juego. cooldown
+  setTimeout(CooldownJuegoTermino, juego.cooldown * 1000);
+}
+
+function CooldownJuegoTermino() {
+  juego.state = 0
+  PuedeIniciarJuego()
+}
 
 
 
