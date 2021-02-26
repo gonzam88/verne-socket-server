@@ -113,3 +113,23 @@ label {
 .btn.down{
   top: 2px;
 }
+#conexionDuplicada{
+  display: none
+}
+#conexionDuplicada.active{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ffffffc7;
+  z-index: 99;
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  text-align: center;
+}
+
+[v-cloak] { display: none; }

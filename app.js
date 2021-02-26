@@ -147,7 +147,7 @@ io.on('connection', (socket) => {
       if(p == userId){
         // Esta dos veces, le cierro la conexión al socket viejo
         console.log("cerrando conexion de ",players[p].id, " socket id", players[p].socketid)
-        io.sockets.sockets[players[p].socketid].emit("duplicateConnection")
+        io.sockets.sockets[players[p].socketid].emit("conexionDuplicada")
         io.sockets.sockets[players[p].socketid].disconnect()
       }
     }

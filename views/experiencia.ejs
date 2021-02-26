@@ -3,7 +3,7 @@
 
     <div id="app" v-bind:style="{borderColor: color.hex}">
       <h1>Experience Controller</h1>
-      <div class="container">
+      <div class="container" v-cloak>
         <div v-show="showClient">
           <div class="myData">
             <!-- <div>
@@ -117,14 +117,12 @@
               <pre><strong>Button01</strong> {{data.button01}}</pre>
               <pre><strong>Button02</strong> {{data.button02}}</pre>
               <pre><strong>Button03</strong> {{data.button03}}</pre>
-
-              <!--<div v-for="(value,parameter) in data">
-
-                {{parameter}}: {{value}}
-              </div>-->
             </div>
           </div>
         </div>
+      </div>
+      <div id="conexionDuplicada" :class="{active:conexionDuplicada}" v-cloak>
+        <h1>Ya tenés el controlador abierto en otra pestaña</h1>
       </div>
     </div>
 

@@ -28,7 +28,8 @@ var app = new Vue({
     conectados: 0,
 
     showClient: true,
-    showAdmin: false
+    showAdmin: false,
+    conexionDuplicada: false
   },
   watch: {
     slider01: function(val) {
@@ -134,7 +135,8 @@ socket.on("otherUpdate", function(data) {
   app.OtherUpdate(data);
 });
 
-socket.on("duplicateConnection", function(data) {
+socket.on("conexionDuplicada", function(data) {
+  app.conexionDuplicada = true
   console.log("CONEXION DUPLICADA", data)
 })
 
