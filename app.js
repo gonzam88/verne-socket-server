@@ -112,14 +112,71 @@ var players = []
 
 
 io.on('connection', (socket) => {
-  console.log("user connected")
+	// user data from the socket.io passport middleware
+  if (socket.request.user && socket.request.user.logged_in) {
+    // usuario logueado
+    let userId = socket.request.user._id
+    console.log("user connected", socket.request.user);
 
-  	// user data from the socket.io passport middleware
-    if (socket.request.user && socket.request.user.logged_in) {
-      console.log(socket.request.user);
-    }else{
-      console.log("usuario no logeado")
-    }
+
+      socket.emit("id", userId) // Le aviso cual es su id
+      for(var p in players){
+        socket.emit("newPlayer", players[p]) // le mando cada uno de los players existentes
+      }
+      players[userId] = // Agrego este player al array
+      {
+        id:  userId,
+        nombre: socket.request.user.name, // data del usuario
+        color: socket.request.user.color, // data del usuario
+      }
+      socket.broadcast.emit("newPlayer", players[userId]) // Les aviso al resto del nuevo jugador
+
+
+      console.log("Nuevo player",userId, "Players online", Object.keys(players).length)
+      console.log(players)
+
+
+      socket.on('disconnect', () => {
+        delete players[userId] // Elimino al player del array
+        socket.broadcast.emit("deletePlayer", userId) // Les aviso al resto que este se fue
+
+        console.log("Usuario desconectado", "Usuarios conectados", Object.keys(players).length)
+        console.log(players)
+      })
+
+      socket.on("playerUpdate", (data)=>{
+        players[data.id][data.parameter] = data.value; // Guardo en en este jugador
+        console.log(data.parameter, data.value)
+        // TODO guardar algunas cosas en la DB del usuario (por ejemplo color)
+        socket.broadcast.emit("otherUpdate", data) // Le aviso a los demas players conectados
+      })
+
+
+      // SERVIDOR COSAS VIEJAS
+      // socket.on("valueChange", (data) =>{
+      //   console.log(data)
+      //   socket.broadcast.emit(
+      //      'valueChange',
+      //      {
+      //        parameter: data.parameter,
+      //        value: data.value
+      //      }
+      //    );
+      // })
+      //
+      // socket.on("clickedBut", (data) =>{
+      //   console.log(data)
+      //   socket.broadcast.emit(
+      //      'clickedBut',
+      //      {
+      //        parameter: data.parameter,
+      //        value: data.value
+      //      }
+      //    );
+      // })
+
+
+  }
 
 })
 // io.on('connection', (socket) => {
