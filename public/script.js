@@ -44,19 +44,19 @@ var app = new Vue({
     }
     /*slider01:function(){
       if(this.serverRequest){this.serverRequest = false; return}
-      
+
       console.log("slider01",this.slider01)
       socket.emit("valueChange", {parameter:"slider01",value:this.slider01})
     },
     slider02:function(){
       if(this.serverRequest){this.serverRequest = false; return}
-      
+
       console.log("slider02",this.slider02)
       socket.emit("valueChange", {parameter:"slider02",value:this.slider02})
     },
     slider03:function(){
       if(this.serverRequest){this.serverRequest = false; return}
-      
+
       console.log("slider03",this.slider03)
       socket.emit("valueChange", {parameter:"slider03",value:this.slider03})
     },*/
@@ -116,10 +116,17 @@ socket.on("id", function(data) {
   // Recibo mi ID
   console.log("id", data);
   app.id = data;
-  
+
   // Envio mi color
-  app.SendUpdate('color', app.color.hex)
+  //app.SendUpdate('color', app.color.hex)
 });
+
+socket.on("loginData", function(data){
+  // Recibo mi data de login
+  console.log("loginData", data)
+  app.id = data.id
+  app.color.hex = data.color
+})
 
 socket.on("newPlayer", function(data) {
   // Un player nuevo
@@ -203,14 +210,14 @@ $(".btn").on("touchstart mousedown", function(e) {
   mouseDown = true;
   currButton = e.target.id;
   app.SendUpdate(currButton,1)
-  
+
 });
 
 $(".btn").on("touchend touchcancel", function(e) {
   var e = event || window.event;
   e.preventDefault && e.preventDefault();
   e.stopPropagation && e.stopPropagation();
-  
+
   let currButton = e.target.id
   $(this).removeClass("down");
 

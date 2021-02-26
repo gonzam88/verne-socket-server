@@ -108,6 +108,7 @@ io.use(passportSocketIo.authorize({
 //   });
 // });
 
+const User = require('./models/user');
 var players = []
 
 
@@ -118,17 +119,21 @@ io.on('connection', (socket) => {
     let userId = socket.request.user._id
     console.log("user connected", socket.request.user);
 
+    let newPlayerData = {
+      id: userId,
+      nombre: socket.request.user.name,
+      color: socket.request.user.color
+    }
 
-      socket.emit("id", userId) // Le aviso cual es su id
+      //socket.emit("id", userId) // Le aviso cual es su id
+      // le aviso su id y color
+      socket.emit("loginData", newPlayerData)
+
       for(var p in players){
         socket.emit("newPlayer", players[p]) // le mando cada uno de los players existentes
       }
-      players[userId] = // Agrego este player al array
-      {
-        id:  userId,
-        nombre: socket.request.user.name, // data del usuario
-        color: socket.request.user.color, // data del usuario
-      }
+      players[userId] = newPlayerData // Agrego este player al array
+
       socket.broadcast.emit("newPlayer", players[userId]) // Les aviso al resto del nuevo jugador
 
 
@@ -147,7 +152,22 @@ io.on('connection', (socket) => {
       socket.on("playerUpdate", (data)=>{
         players[data.id][data.parameter] = data.value; // Guardo en en este jugador
         console.log(data.parameter, data.value)
-        // TODO guardar algunas cosas en la DB del usuario (por ejemplo color)
+
+        // Si cambió el color lo guardo en su DB
+        if(data.parameter == "color"){
+            User.findOne({ _id: userId}, function(err, userDb) {
+                if (userDb){
+                  userDb.color = data.value;
+                  userDb.save(function (err) {
+                      if (err)
+                      {
+                          // TODO: Handle the error!
+                      }
+                      // console.log("color guardado")
+                  });
+                }
+            })
+        }
         socket.broadcast.emit("otherUpdate", data) // Le aviso a los demas players conectados
       })
 
