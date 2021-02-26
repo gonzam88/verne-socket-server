@@ -19,17 +19,8 @@ pre {
 ul {
   list-style: none;
 }
-li {
-  padding: 5px;
-  margin: 10px;
-}
 .grupo {
   padding: 10px;
-}
-li:hover,
-.grupo:hover {
-  background: slateblue;
-  color: white;
 }
 textarea {
   font-family: sans-serif;
@@ -131,5 +122,18 @@ label {
   padding: 30px;
   text-align: center;
 }
+#colorContainer{
+  width: 100%;
+}
 
+.tab{
+  display: none;
+}
+.tab.active{
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 18em);
+  justify-content: space-evenly;
+  align-items: center;
+}
 [v-cloak] { display: none; }

@@ -12,6 +12,7 @@ var app = new Vue({
   },
   data: {
     showOthers: false,
+    currentTab: 1,
 
     id: -1,
     cantPlayers: 0,

@@ -2,8 +2,101 @@
 <link rel="stylesheet" href="/experiencia-style.css" />
 
     <div id="app" v-bind:style="{borderColor: color.hex}">
-      <h1>Experience Controller</h1>
+
+
+
+       <div class="tabs is-centered">
+        <ul>
+          <li :class="{'is-active':currentTab==1}"><a @click="currentTab=1">Pantalla #1</a></li>
+          <li :class="{'is-active':currentTab==2}"><a @click="currentTab=2">Pantalla #2</a></li>
+          <li :class="{'is-active':currentTab==3}"><a @click="currentTab=3">Pantalla #3</a></li>
+        </ul>
+      </div>
+
+      <div class="tab" :class="{active:currentTab==1}">
+        <!-- pantalla #1 -->
+        <div><label>ID</label> {{id}}</div>
+        <div id="colorContainer">
+          <label>Color</label> {{color.hex}}
+          <slider-picker
+            v-model="color"
+            @input="SendUpdate('color',color.hex)"
+          />
+        </div>
+      </div>
+
+      <div class="tab" :class="{active:currentTab==2}">
+        <!-- pantalla #2 -->
+        <div  class='sliders'>
+          <div>
+            <label for="slider01">slider01</label>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              id="slider01"
+              v-model="slider01"
+            />
+            <input disabled v-model="slider01" style="width: 2em" />
+          </div>
+
+          <div>
+            <label for="slider02">slider02</label>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              id="slider02"
+              v-model="slider02"
+            />
+            <input disabled v-model="slider02" style="width: 2em" />
+          </div>
+
+          <div>
+            <label for="slider03">slider03</label>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              id="slider03"
+              v-model="slider03"
+            />
+            <input disabled v-model="slider03" style="width: 2em" />
+          </div>
+        </div>
+        <br>
+        <div class='buttons'>
+          <div class="btn button is-success" id="button01">
+            button01
+          </div>
+          <div class="btn button is-link" id="button02">
+            button02
+          </div>
+          <div class="btn button is-danger" id="button03">
+            button03
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="tab" :class="{active:currentTab==3}">
+        <!-- pantalla #3 -->
+        <fieldset class="pad" data-width="180" data-height="180">
+          <legend>XY Pad</legend>
+          x : <input name="x" value="27" /> y :
+          <input name="y" value="80" />
+        </fieldset>
+      </div>
+
+
       <div class="container" v-cloak>
+
+
+
         <div v-show="showClient">
           <div class="myData">
             <!-- <div>
@@ -15,83 +108,13 @@
                 v-on:keyup="SendUpdate('nombre', nombre)"
               />
             </div> -->
-            <div><label>ID</label> {{id}}</div>
-            <div id="colorContainer">
-              <label>Color</label> {{color.hex}}
-              <slider-picker
-                v-model="color"
-                @input="SendUpdate('color',color.hex)"
-              />
-            </div>
+
+
+
+
+
             <br />
 
-            <fieldset class="pad" data-width="180" data-height="180">
-              <legend>XY Pad</legend>
-              x : <input name="x" value="27" /> y :
-              <input name="y" value="80" />
-            </fieldset>
-
-            <div>
-              <label for="slider01">slider01</label>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                id="slider01"
-                v-model="slider01"
-              />
-              <input disabled v-model="slider01" style="width: 2em" />
-            </div>
-
-            <div>
-              <label for="slider02">slider02</label>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                id="slider02"
-                v-model="slider02"
-              />
-              <input disabled v-model="slider02" style="width: 2em" />
-            </div>
-
-            <div>
-              <label for="slider03">slider03</label>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                id="slider03"
-                v-model="slider03"
-              />
-              <input disabled v-model="slider03" style="width: 2em" />
-            </div>
-            <br />
-            <div>
-              <div class="btn button is-success" id="button01">
-                button01
-              </div>
-              <div class="btn button is-link" id="button02">
-                button02
-              </div>
-              <div class="btn button is-danger" id="button03">
-                button03
-              </div>
-              <!--
-        <button id="button01" v-on:mousedown="SendUpdate('button01',1)" v-on:mouseup="SendUpdate('button01',0)">
-          BUTTON01
-        </button>
-        <button id="button02" v-on:mousedown="SendUpdate('button02',1)" v-on:mouseup="SendUpdate('button02',0)">
-          BUTTON02
-        </button>
-        <button id="button03" v-on:mousedown="SendUpdate('button03',1)" v-on:mouseup="SendUpdate('button03',0)">
-          BUTTON03
-        </button>
-      -->
-            </div>
           </div>
         </div>
 
