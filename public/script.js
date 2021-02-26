@@ -3,9 +3,7 @@ socket.emit("logged", "holis");
 
 var colorSlider = VueColor.Slider;
 
-let defaultProps = {
-  hex: '#' + Math.floor(Math.random()*16777215).toString(16)
-}
+let defaultColor = Object.assign({}, this.colors, { a: 1, hex: "#ffffff" })
 
 var app = new Vue({
   el: "#app",
@@ -19,7 +17,7 @@ var app = new Vue({
     cantPlayers: 0,
     players: [],
 
-    color: defaultProps,
+    color: defaultColor,
     nombre: "",
 
     // borrar esto
@@ -112,20 +110,12 @@ socket.on("disconnect", function() {
   app.resetPlayerArr();
 });
 
-socket.on("id", function(data) {
-  // Recibo mi ID
-  console.log("id", data);
-  app.id = data;
-
-  // Envio mi color
-  //app.SendUpdate('color', app.color.hex)
-});
 
 socket.on("loginData", function(data){
   // Recibo mi data de login
   console.log("loginData", data)
   app.id = data.id
-  app.color.hex = data.color
+  app.color = Object.assign({}, this.colors, { a: 1, hex: data.color })
 })
 
 socket.on("newPlayer", function(data) {

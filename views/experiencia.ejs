@@ -1,37 +1,8 @@
-<h1>experiencia</h1>
-<p> Bienvenide <%= user.name %></p>
-<a href="/logout">Logout</a>
+<%- include('navbar'); %>
+<link rel="stylesheet" href="/style.css" />
 
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-
-    <meta name="description" content="A cool thing made with Glitch" />
-
-    <title>Verne Socket</title>
-
-    <link
-      id="favicon"
-      rel="icon"
-      href="https://glitch.com/edit/favicon-app.ico"
-      type="image/x-icon"
-    />
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body>
     <div id="app" v-bind:style="{borderColor: color.hex}">
-      <h1>Verne Socket a VVVV</h1>
-      <pre>id: {{id}}</pre>
-
-      <br />
+      <h1>Experience Controller</h1>
       <div class="container">
         <div v-show="showClient">
           <div class="myData">
@@ -44,7 +15,7 @@
                 v-on:keyup="SendUpdate('nombre', nombre)"
               />
             </div> -->
-
+            <div><label>ID</label> {{id}}</div>
             <div id="colorContainer">
               <label>Color</label> {{color.hex}}
               <slider-picker
@@ -167,5 +138,3 @@
 
     <!-- import the webpage's client-side javascript file -->
     <script src="/script.js" defer></script>
-  </body>
-</html>

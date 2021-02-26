@@ -21,6 +21,7 @@ router.get('/experiencia',ensureAuthenticated,(req,res)=>{
     });
 })
 
+
 //login handle
 router.get('/login',(req,res)=>{
   res.render('login');

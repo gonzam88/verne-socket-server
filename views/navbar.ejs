@@ -8,8 +8,12 @@
   <div class="navbar-menu">
 
     <div class="navbar-end">
-      <a class="navbar-item">NOSOTROS</a>
-      <a class="navbar-item">LEGALES</a>
+      <!-- <a class="navbar-item">NOSOTROS</a> -->
+      <%if (typeof(user)!='undefined') { %>
+        <span class="navbar-item"><%= user.name %></span>
+        <a class="navbar-item" href="/logout">Logout</a>
+      <% } %>
+
       <!-- <a class="navbar-item">ILLUSTRATION SERIES</a>
       <a class="navbar-item">EXCLUSIVE ILLUSTRATIONS</a> -->
     </div>
