@@ -6,9 +6,8 @@ const app = express();
 const expressEjsLayout = require('express-ejs-layouts')
 const flash = require('connect-flash');
 const session = require('express-session');
+const MongoStore = require('connect-mongo').default;
 const passport = require("passport");
-
-var sessionStore = require("connect-mongoose-session-store")(express)
 
 
 const passportSocketIo = require('passport.socketio');
@@ -35,6 +34,8 @@ app.use(expressEjsLayout);
 app.use(express.urlencoded({extended : false}));
 
 //express session
+var sessionStore = MongoStore.create({ mongoUrl: 'mongodb://localhost/sessions'})
+
 app.use(session({
   // original
     // secret : 'secret',
@@ -42,7 +43,7 @@ app.use(session({
     // saveUninitialized : true
 
     //middleware para que funque con socketio
-    store: sessionstore.createSessionStore({ type: 'mongodb'}),
+    store: sessionStore,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -51,6 +52,17 @@ app.use(session({
     },
     secret: process.env.SECRET_KEY_BASE
 }));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+// Reading your user base ont he user.id
+passport.deserializeUser(function(id, done) {
+  User.get(id).run().then(function(user) {
+    done(null, user.public());
+  });
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -78,7 +90,7 @@ app.listen(process.env.EXPRESSPORT);
 io.use(passportSocketIo.authorize({
   key: 'connect.sid',
   secret: process.env.SECRET_KEY_BASE,
-  store: sessionstore,
+  store: sessionStore,
   passport: passport,
   cookieParser: cookieParser
 }));
@@ -172,4 +184,4 @@ io.on('connection', (socket) => {
 //   })
 // });
 
- console.log(`Socket is listening on port ${listener.address().port}`);
+ console.log(`App is listening on port ${listener.address().port}`);
