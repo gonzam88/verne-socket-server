@@ -61,7 +61,7 @@ label {
 #app {
   padding: 20px;
   border: 20px solid rgb(0, 0, 0);
-  height: calc(100vh - 80px);
+  height: calc(100vh - 3.25em);
 }
 .container {
   display: flex;
@@ -98,18 +98,18 @@ label {
   -ms-user-select: none;
   user-select: none;
 
-  border: 1px solid;
+  /* border: 1px solid; */
   display: inline-block;
-  padding: 5px;
+  /* padding: 5px;
   color: grey;
-  margin-top: 5px;
+  margin-top: 5px; */
 
   position: relative;
-  top:0px;
+  /* top:0px; */
 }
-.btn:hover {
+/* .btn:hover {
   color: #000;
-}
+} */
 .btn.down{
   top: 2px;
 }

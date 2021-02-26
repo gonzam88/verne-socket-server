@@ -139,7 +139,7 @@ router.post('/registrar', (req, res) => {
 //logout
 router.get('/logout', (req, res) => {
   req.logout();
-  req.flash('success_msg', 'Deslogueado');
+  req.flash('success_msg', 'Deslogueado correctamente');
   res.redirect('/login');
 })
 

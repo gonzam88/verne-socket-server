@@ -1,41 +1,31 @@
 <%- include('navbar'); %>
 
 <section class="container">
-     <div class="columns is-multiline">
-       <div class="column is-8 is-offset-2 register">
-         <div class="columns">
-           <div class="column right has-text-centered">
-             <h1 class="title is-4">Logueate</h1>
-             <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit</p>
-             <%- include ('./partials/messages') %>
+  <div class="columns is-multiline">
+    <div class="column is-8 is-offset-2 register">
+      <div class="columns">
+        <div class="column right has-text-centered">
+          <h1 class="title is-4">Logueate</h1>
+          <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit</p>
+          <%- include ('./partials/messages') %>
 
-             <form action="/login" method="POST">
-             <div class="field">
-             <input
-             class="input is-normal"
-             type="email"
-             name="email"
-             placeholder="Email"
-             />
-             </div>
-             <div class="field">
-                 <input
-                   class="input is-normal"
-                   type="password"
-                   name="password"
-                   placeholder="Contraseña"
-                 />
+          <form action="/login" method="POST">
+            <div class="field">
+              <input class="input is-normal" type="email" name="email" placeholder="Email" />
+            </div>
+            <div class="field">
+              <input class="input is-normal" type="password" name="password" placeholder="Contraseña" />
 
-             </div>
-             <button type="submit"  class="button is-block is-black is-fullwidth is-normal">Login</button>
-             <br />
-              <small><em>No tenés cuenta? Registrate <a href='/registrar'>acá</a></em></small>
-             </form>
+            </div>
+            <button type="submit" class="button is-block is-black is-fullwidth is-normal">Iniciar sesión</button>
+            <br />
+            <small><em>No tenés cuenta? Registrate <a href='/registrar'>acá</a></em></small>
+          </form>
 
 
-           </div>
-         </div>
-       </div>
+        </div>
+      </div>
+    </div>
 
-     </div>
-   </section>
+  </div>
+</section>
