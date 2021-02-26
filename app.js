@@ -207,7 +207,7 @@ function PuedeIniciarJuego() {
 
     if (clients.length >= juego.personasPorTurno && juego.state == 0) {
       console.log("Moviendo a los jugadores a la sala de Juego.")
-      clients.forEach(function(client){
+      clients.forEach(function(client) {
         let clientSocket = io.sockets.sockets[client]
         clientSocket.leave("espera")
         clientSocket.join("juego")
@@ -240,9 +240,35 @@ function TerminarJuego() {
   // vacio el room Juego
   io.in('juego').clients((error, clients) => {
     if (error) throw error;
-    clients.forEach(function(client){
+    clients.forEach(function(client) {
       let clientSocket = io.sockets.sockets[client]
       clientSocket.leave("juego")
+
+      // TODO guardar datos en DB
+      let participacion = {
+        date: Date.now(),
+        puntos: Math.floor(Math.random() * Math.floor(10)) // random
+      }
+
+      let userId = clientSocket.request.user._id
+console.log(userId, participacion)
+      User.findOneAndUpdate({
+          _id: userId
+        }, {
+          $push: {
+            participaciones: participacion
+          }
+        },
+        function(error, success) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(success);
+          }
+        });
+
+
+
     })
   })
 

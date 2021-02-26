@@ -31,7 +31,7 @@ const UserSchema  = new mongoose.Schema({
     {
       date : Date,
       puntos : Number
-    }
+    },
   ]
 
 });
