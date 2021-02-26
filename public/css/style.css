@@ -1,109 +1,108 @@
 @media(max-width: 500px) {
-      .reverse-columns {
-        flex-direction: column-reverse;
-        display: flex;
-      }
-    }
-    h1,h2,h3{
-      font-family: 'Merriweather', serif !important;
-    }
-    .titled {
-      font-family: 'Merriweather', serif !important;
-      font-size: 58px !important;
-      font-weight: 400 !important;
-      line-height: 64px !important;
-    }
+  .reverse-columns {
+    flex-direction: column-reverse;
+    display: flex;
+  }
+}
 
-    .subtitled {
-      font-family: 'Merriweather', serif !important;
-      font-size: 22px !important;
-      font-weight: 400 !important;
-      line-height: 36px !important;
-    }
+h1, h2, h3 {
+  font-family: 'Merriweather', serif !important;
+}
 
+.titled {
+  font-family: 'Merriweather', serif !important;
+  font-size: 58px !important;
+  font-weight: 400 !important;
+  line-height: 64px !important;
+}
 
+.subtitled {
+  font-family: 'Merriweather', serif !important;
+  font-size: 22px !important;
+  font-weight: 400 !important;
+  line-height: 36px !important;
+}
 
+:root {
+  --brandColor: hsl(166, 67%, 51%);
+  --background: rgb(247, 247, 247);
+  --textDark: hsla(0, 0%, 0%, 0.66);
+  --textLight: hsla(0, 0%, 0%, 0.33);
+}
 
-    :root {
-          --brandColor: hsl(166, 67%, 51%);
-          --background: rgb(247, 247, 247);
-          --textDark: hsla(0, 0%, 0%, 0.66);
-          --textLight: hsla(0, 0%, 0%, 0.33);
-        }
+body {
+  background: var(--background);
+  height: 100vh;
+  color: var(--textDark);
+}
 
-        body {
-          background: var(--background);
-          height: 100vh;
-          color: var(--textDark);
-        }
+.navbar {
+  background: none;
+}
 
-        .navbar{
-          background: none;
-        }
+.field:not(:last-child) {
+  margin-bottom: 1rem;
+}
 
-        .field:not(:last-child) {
-          margin-bottom: 1rem;
-        }
+.register {
+  margin-top: 20px;
+  background: white;
+  border-radius: 10px;
+}
 
-        .register {
-          margin-top: 20px;
-          background: white;
-          border-radius: 10px;
-        }
+.left,
+.right {
+  padding: 4.5rem;
+}
 
-        .left,
-        .right {
-          padding: 4.5rem;
-        }
+.left {
+  border-right: 5px solid var(--background);
+}
 
-        .left {
-          border-right: 5px solid var(--background);
-        }
+.left .title {
+  font-weight: 800;
+  letter-spacing: -2px;
+}
 
-        .left .title {
-          font-weight: 800;
-          letter-spacing: -2px;
-        }
+.left .colored {
+  color: var(--brandColor);
+  font-weight: 500;
+  margin-top: 1rem !important;
+  letter-spacing: -1px;
+}
 
-        .left .colored {
-          color: var(--brandColor);
-          font-weight: 500;
-          margin-top: 1rem !important;
-          letter-spacing: -1px;
-        }
+.left p {
+  color: var(--textLight);
+  font-size: 1.15rem;
+}
 
-        .left p {
-          color: var(--textLight);
-          font-size: 1.15rem;
-        }
+.right .title {
+  font-weight: 800;
+  letter-spacing: -1px;
+}
 
-        .right .title {
-          font-weight: 800;
-          letter-spacing: -1px;
-        }
+.right .description {
+  margin-top: 1rem;
+  margin-bottom: 1rem !important;
+  color: var(--textLight);
+  font-size: 1.15rem;
+}
 
-        .right .description {
-          margin-top: 1rem;
-          margin-bottom: 1rem !important;
-          color: var(--textLight);
-          font-size: 1.15rem;
-        }
+.right small {
+  color: var(--textLight);
+}
 
-        .right small {
-          color: var(--textLight);
-        }
+input {
+  font-size: 1rem;
+}
 
-        input {
-          font-size: 1rem;
-        }
+input:focus {
+  border-color: var(--brandColor) !important;
+  box-shadow: 0 0 0 1px var(--brandColor) !important;
+}
 
-        input:focus {
-          border-color: var(--brandColor) !important;
-          box-shadow: 0 0 0 1px var(--brandColor) !important;
-        }
-
-        .fab,
-        .fas {
-          color: var(--textLight);
-          margin-right: 1rem;
-        }
+.fab,
+.fas {
+  color: var(--textLight);
+  margin-right: 1rem;
+}
