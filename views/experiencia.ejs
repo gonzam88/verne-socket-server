@@ -7,9 +7,10 @@
 
        <div class="tabs is-centered">
         <ul>
-          <li :class="{'is-active':currentTab==1}"><a @click="currentTab=1">Pantalla #1</a></li>
-          <li :class="{'is-active':currentTab==2}"><a @click="currentTab=2">Pantalla #2</a></li>
-          <li :class="{'is-active':currentTab==3}"><a @click="currentTab=3">Pantalla #3</a></li>
+          <li :class="{'is-active':currentTab==1}"><a href="#pantalla1" @click="currentTab=1">Pantalla #1</a></li>
+          <li :class="{'is-active':currentTab==2}"><a href="#pantalla2"  @click="currentTab=2">Pantalla #2</a></li>
+          <li :class="{'is-active':currentTab==3}"><a href="#pantalla3"  @click="currentTab=3">Pantalla #3</a></li>
+          <li :class="{'is-active':currentTab==4}"><a href="#otres"  @click="currentTab=4">Otres</a></li>
         </ul>
       </div>
 
@@ -78,47 +79,20 @@
           <div class="btn button is-danger" id="button03">
             button03
           </div>
-
         </div>
-
       </div>
 
       <div class="tab" :class="{active:currentTab==3}">
         <!-- pantalla #3 -->
-        <fieldset class="pad" data-width="180" data-height="180">
+        <fieldset class="pad" data-width="300" data-height="300">
           <legend>XY Pad</legend>
           x : <input name="x" value="27" /> y :
           <input name="y" value="80" />
         </fieldset>
       </div>
 
-
-      <div class="container" v-cloak>
-
-
-
-        <div v-show="showClient">
-          <div class="myData">
-            <!-- <div>
-              <label for="name">Nombre</label>
-              <input
-                type="text"
-                id="name"
-                @input="evt=>nombre=evt.target.value"
-                v-on:keyup="SendUpdate('nombre', nombre)"
-              />
-            </div> -->
-
-
-
-
-
-            <br />
-
-          </div>
-        </div>
-
-        <div class="othersData" v-show="showAdmin">
+      <div class="tab" :class="{active:currentTab==4}">
+        <div class="othersData">
           <pre>Players: {{cantPlayers}}</pre>
           <div class="list">
             <div
@@ -143,6 +117,12 @@
             </div>
           </div>
         </div>
+      </div>
+
+
+      <div class="container" v-cloak>
+
+
       </div>
       <div id="conexionDuplicada" :class="{active:conexionDuplicada}" v-cloak>
         <h1>Ya tenés el controlador abierto en otra pestaña</h1>

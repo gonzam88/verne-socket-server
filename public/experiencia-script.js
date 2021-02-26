@@ -3,7 +3,10 @@ socket.emit("logged", "holis");
 
 var colorSlider = VueColor.Slider;
 
-let defaultColor = Object.assign({}, this.colors, { a: 1, hex: "#ffffff" })
+let defaultColor = Object.assign({}, this.colors, {
+  a: 1,
+  hex: "#ffffff"
+})
 
 var app = new Vue({
   el: "#app",
@@ -103,7 +106,27 @@ var app = new Vue({
       });
     }
   },
+  mounted: function() {
+    switch (getAnchor()) {
+      case 'pantalla1':
+        this.currentTab = 1
+        break;
 
+      case 'pantalla2':
+        this.currentTab = 2
+        break;
+
+      case 'pantalla3':
+        this.currentTab = 3
+        break;
+
+      case 'otres':
+        this.currentTab = 4
+        break;
+      default:
+
+    }
+  }
 });
 
 // MENSAJES DEL SERVIDOR
@@ -113,11 +136,14 @@ socket.on("disconnect", function() {
 });
 
 
-socket.on("loginData", function(data){
+socket.on("loginData", function(data) {
   // Recibo mi data de login
   console.log("loginData", data)
   app.id = data.id
-  app.color = Object.assign({}, this.colors, { a: 1, hex: data.color })
+  app.color = Object.assign({}, this.colors, {
+    a: 1,
+    hex: data.color
+  })
 })
 
 socket.on("newPlayer", function(data) {
@@ -187,6 +213,12 @@ function getQueryParams(qs) {
   return params;
 }
 
+function getAnchor() {
+  var currentUrl = document.URL,
+    urlParts = currentUrl.split('#');
+  return (urlParts.length > 1) ? urlParts[1] : null;
+}
+
 $(function() {
   var $pad = $(".pad")
     .xy({
@@ -202,7 +234,9 @@ $(function() {
         app.SendUpdate("pad", [value[0], value[1]]);
       }
     })
-    .css({ border: "1px solid #BBB" });
+    .css({
+      border: "1px solid #BBB"
+    });
 
   var query = getQueryParams(document.location.search);
   console.log(query);
@@ -226,7 +260,7 @@ $(".btn").on("touchstart mousedown", function(e) {
 
   mouseDown = true;
   currButton = e.target.id;
-  app.SendUpdate(currButton,1)
+  app.SendUpdate(currButton, 1)
 
 });
 
@@ -239,7 +273,7 @@ $(".btn").on("touchend touchcancel", function(e) {
   $(this).removeClass("down");
 
   mouseDown = false;
-   app.SendUpdate(currButton,0)
+  app.SendUpdate(currButton, 0)
 });
 
 /*
@@ -257,7 +291,7 @@ $(document).on("mouseup", function(e) {
   if (mouseDown) {
     $(this).removeClass("down");
     let currButton = e.target.id
-    app.SendUpdate(currButtonEle.id,0)
+    app.SendUpdate(currButtonEle.id, 0)
     $(currButtonEle).removeClass("down");
     mouseDown = false;
   }
