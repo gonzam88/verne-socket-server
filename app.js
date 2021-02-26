@@ -103,6 +103,7 @@ var juego = {
   cooldown: 2, // en segundos, tiempo de espera antes de arrancar un nuevo juego
   state: 0,
   countdownEnd: 0, // timestamp de cuando termina el countdown
+  participacionesMaximas: 1, // cantidad de veces que el jugador puede participar. 0> infinito
 }
 
 // states room juego
@@ -128,6 +129,9 @@ io.use(passportSocketIo.authorize({
 
 
 const User = require('./models/user');
+
+
+
 var players = []
 
 
@@ -135,13 +139,33 @@ io.on('connection', (socket) => {
   // user data from the socket.io passport middleware
   if (socket.request.user && socket.request.user.logged_in) {
     // usuario logueado
-    let userId = socket.request.user._id
-    console.log("user connected", socket.request.user);
+    var userId = socket.request.user._id
+    console.log("user connected", socket.request.user.name, userId);
+
+    // busco si este ID ya está logueado en otro socket y lo echo (para que no esté dos veces el mismo usuario)
+    for (var p in players) {
+      if(p == userId){
+        // Esta dos veces, le cierro la conexión al socket viejo
+        console.log("cerrando conexion de ",players[p].id, " socket id", players[p].socketid)
+        io.sockets.sockets[players[p].socketid].emit("duplicateConnection")
+        io.sockets.sockets[players[p].socketid].disconnect()
+      }
+    }
+    // for(let i=0; i < players.length; i++){
+    //   console.log(players[i].id , userId)
+    //   if(players[i].id == userId){
+    //     // Esta dos veces, le cierro la conexión al socket viejo
+    //     console.log("cerrando conexion de ",players[i].id, " socket id", players[i].socketid)
+    //     io.sockets.sockets[players[i].socketid].disconnect()
+    //     // socket.manager.onClientDisconnect(socket.id);
+    //   }
+    // }
 
     let newPlayerData = {
       id: userId,
       nombre: socket.request.user.name,
-      color: socket.request.user.color
+      color: socket.request.user.color,
+      socketid: socket.id
     }
 
     //socket.emit("id", userId) // Le aviso cual es su id
@@ -156,14 +180,20 @@ io.on('connection', (socket) => {
     socket.broadcast.emit("newPlayer", players[userId]) // Les aviso al resto del nuevo jugador
 
 
-    console.log("Nuevo player", userId, "Players online", Object.keys(players).length)
-    console.log(players)
+    console.log("Players online", Object.keys(players).length)
+    // console.log(players)
 
     // agrego este nuevo jugador a la sala de espera
     // TODO chequear si cumple requisito para jugar
-    socket.join('espera');
-    socket.emit("juego:espera")
-    PuedeIniciarJuego()
+    participaciones = socket.request.user.participaciones
+    if (juego.participacionesMaximas == 0 || participaciones.length < juego.participacionesMaximas) {
+      socket.join('espera');
+      socket.emit("juego:espera")
+      PuedeIniciarJuego()
+    } else {
+      socket.emit("juego:participacionMaxima")
+    }
+
 
 
     socket.on('disconnect', () => {
@@ -171,7 +201,7 @@ io.on('connection', (socket) => {
       socket.broadcast.emit("deletePlayer", userId) // Les aviso al resto que este se fue
 
       console.log("Usuario desconectado", "Usuarios conectados", Object.keys(players).length)
-      console.log(players)
+      // console.log(players)
     })
 
     socket.on("playerUpdate", (data) => {
@@ -251,7 +281,6 @@ function TerminarJuego() {
       }
 
       let userId = clientSocket.request.user._id
-console.log(userId, participacion)
       User.findOneAndUpdate({
           _id: userId
         }, {
@@ -266,8 +295,6 @@ console.log(userId, participacion)
             console.log(success);
           }
         });
-
-
 
     })
   })

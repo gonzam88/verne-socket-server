@@ -106,7 +106,7 @@ var app = new Vue({
 
 // MENSAJES DEL SERVIDOR
 socket.on("disconnect", function() {
-  console.log("Client disconnecting");
+  console.warn("Client disconnecting");
   app.resetPlayerArr();
 });
 
@@ -134,6 +134,10 @@ socket.on("otherUpdate", function(data) {
   app.OtherUpdate(data);
 });
 
+socket.on("duplicateConnection", function(data) {
+  console.log("CONEXION DUPLICADA", data)
+})
+
 
 // Logica Juego
 socket.on("juego:espera", function(data) {
@@ -148,6 +152,11 @@ socket.on("juego:comienza", function(data) {
 socket.on("juego:termino", function(data) {
   console.log("TERMINÓ EL JUEGO", data)
 })
+socket.on("juego:participacionMaxima", function(data) {
+  console.log("NO PODÉS VOLVER A PARTICIPAR", data)
+})
+
+
 
 /*
 // OLD
