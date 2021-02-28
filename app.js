@@ -104,7 +104,7 @@ var juego = {
   state: 0,
   countdownEnd: 0, // timestamp de cuando termina el countdown
   juegoEnd: 0,
-  participacionesMaximas: 0, // cantidad de veces que el jugador puede participar. 0> infinito
+  participacionesMaximas: 3, // cantidad de veces que el jugador puede participar. 0> infinito
 }
 
 // states room juego
@@ -192,7 +192,7 @@ io.on('connection', (socket) => {
       socket.emit("juego:espera")
       PuedeIniciarJuego()
     } else {
-      socket.emit("juego:participacionMaxima")
+      socket.emit("juego:participacionMaxima", {error: `No podés jugar, ya participaste ${participaciones.length} veces.`})
     }
 
 

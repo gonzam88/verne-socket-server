@@ -198,7 +198,8 @@ socket.on("juego:termino", function(data) {
 socket.on("juego:participacionMaxima", function(data) {
   console.warn("Error entrando a sala", "NO PODÉS VOLVER A PARTICIPAR", data)
   app.sala.state = 'err'
-  app.sala.errTxt = data
+  console.log(data)
+  app.sala.errTxt = data.error
 })
 
 
