@@ -78,6 +78,7 @@ label {
   border: 5px solid rgb(0, 0, 0);
   padding: 5px;
   margin: 5px;
+  transition: border .7s;
 }
 
 .vc-slider {
