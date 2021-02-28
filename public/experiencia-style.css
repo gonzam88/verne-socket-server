@@ -51,7 +51,8 @@ label {
 
 #app {
   padding: 20px;
-  border: 20px solid rgb(0, 0, 0);
+  border: 20px solid rgb(255, 255, 255);
+  transition: border .7s;
   height: calc(100vh - 3.25em);
 }
 .container {
