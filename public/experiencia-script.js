@@ -24,6 +24,17 @@ var app = new Vue({
     color: defaultColor,
     nombre: "",
 
+    sala: {
+      state: 0,
+      countdownTs: 0,
+      countdownTxt: "",
+      duracionTs: 0,
+      duracionTxt: "",
+      errTxt: ""
+    },
+
+
+
     // borrar esto
     slider01: 0,
     slider02: 0,
@@ -44,25 +55,7 @@ var app = new Vue({
     },
     slider03: function(val) {
       this.SendUpdate("slider03", val);
-    }
-    /*slider01:function(){
-      if(this.serverRequest){this.serverRequest = false; return}
-
-      console.log("slider01",this.slider01)
-      socket.emit("valueChange", {parameter:"slider01",value:this.slider01})
     },
-    slider02:function(){
-      if(this.serverRequest){this.serverRequest = false; return}
-
-      console.log("slider02",this.slider02)
-      socket.emit("valueChange", {parameter:"slider02",value:this.slider02})
-    },
-    slider03:function(){
-      if(this.serverRequest){this.serverRequest = false; return}
-
-      console.log("slider03",this.slider03)
-      socket.emit("valueChange", {parameter:"slider03",value:this.slider03})
-    },*/
   },
   computed: {},
   methods: {
@@ -104,6 +97,19 @@ var app = new Vue({
           return true; // stop searching
         }
       });
+    },
+
+    TickCountdownTimer: function(){
+      this.sala.countdownTxt = FormatTimeDiff(this.sala.countdownTs)
+      if(this.sala.state == 1){
+        setTimeout(this.TickCountdownTimer, 400);
+      }
+    },
+    TickDuracionTimer: function(){
+      this.sala.duracionTxt = FormatTimeDiff(this.sala.duracionTs)
+      if(this.sala.state == 2){
+        setTimeout(this.TickDuracionTimer, 400);
+      }
     }
   },
   mounted: function() {
@@ -170,19 +176,29 @@ socket.on("conexionDuplicada", function(data) {
 
 // Logica Juego
 socket.on("juego:espera", function(data) {
-  console.log("ENTRE A SALA DE ESPERA", data)
+  // console.log("ENTRE A SALA DE ESPERA", data)
+  app.sala.state = 0
 })
 socket.on("juego:countdown", function(data) {
-  console.log("ESTA POR COMENZAR EL JUEGO", data)
+  // console.log("ESTA POR COMENZAR EL JUEGO", data)
+  app.sala.state = 1
+  app.sala.countdownTs = data.timestamp
+  app.TickCountdownTimer()
 })
 socket.on("juego:comienza", function(data) {
-  console.log("COMIENZA EL JUEGO", data)
+  // console.log("COMIENZA EL JUEGO", data)
+  app.sala.state = 2
+  app.sala.duracionTs = data.timestamp
+  app.TickDuracionTimer()
 })
 socket.on("juego:termino", function(data) {
-  console.log("TERMINÓ EL JUEGO", data)
+  // console.log("TERMINÓ EL JUEGO", data)
+  app.sala.state = 3
 })
 socket.on("juego:participacionMaxima", function(data) {
-  console.log("NO PODÉS VOLVER A PARTICIPAR", data)
+  console.warn("Error entrando a sala", "NO PODÉS VOLVER A PARTICIPAR", data)
+  app.sala.state = 'err'
+  app.sala.errTxt = data
 })
 
 
@@ -198,6 +214,14 @@ socket.on("valueChange", function(data){
 socket.on("clickedBut", function(data){
   console.log("Server Request",data)
 })*/
+
+function FormatTimeDiff(endTime){
+  let duration = moment.duration(endTime - Date.now())
+  let mins = duration.minutes()
+  let secs = duration.seconds()
+  secs = secs > 9 ? secs : "0"+secs
+  return  mins + ":" + secs;
+}
 
 // admin url get
 function getQueryParams(qs) {

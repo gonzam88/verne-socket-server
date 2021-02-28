@@ -119,6 +119,24 @@
         </div>
       </div>
 
+      <div cass='estadoTurno'>
+        <div v-if="sala.state==0">
+          Esperando más jugadores
+        </div>
+        <div v-if="sala.state==1">
+          Comenzando juego en {{sala.countdownTxt}}
+        </div>
+        <div v-if="sala.state==2">
+          Tiempo restante {{sala.duracionTxt}}
+        </div>
+        <div v-if="sala.state==3">
+          Juego terminado.
+        </div>
+        <div v-if="sala.state=='err'">
+          {{sala.errTxt}}
+        </div>
+      </div>
+
 
       <div class="container" v-cloak>
 
@@ -131,6 +149,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
     <script src="https://coso.cloud/jQuery-Kontrol/js/jquery.kontrol.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>

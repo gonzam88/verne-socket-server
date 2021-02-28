@@ -98,12 +98,13 @@ app.listen(process.env.EXPRESSPORT);
 // **************
 var juego = {
   personasPorTurno: 2,
-  countdown: 5, // en segundos, countdown cuando el juego está por arrancar
-  duracion: 10, // en segundos, duracion del juego
+  countdown: 20, // en segundos, countdown cuando el juego está por arrancar
+  duracion: 60, // en segundos, duracion del juego
   cooldown: 2, // en segundos, tiempo de espera antes de arrancar un nuevo juego
   state: 0,
   countdownEnd: 0, // timestamp de cuando termina el countdown
-  participacionesMaximas: 1, // cantidad de veces que el jugador puede participar. 0> infinito
+  juegoEnd: 0,
+  participacionesMaximas: 0, // cantidad de veces que el jugador puede participar. 0> infinito
 }
 
 // states room juego
@@ -247,7 +248,8 @@ function PuedeIniciarJuego() {
 
       // les aviso y les paso el timestamp de cuando arranca el juego
       io.in("juego").emit("juego:countdown", {
-        countdown: juego.countdownEnd
+        duracion: juego.countdown,
+        timestamp: juego.countdownEnd
       });
       setTimeout(IniciarJuego, juego.countdown * 1000);
     }
@@ -258,8 +260,10 @@ function IniciarJuego() {
   // TODO volver a chequear la cantidad de jugadores
   console.log("empezó el juego")
   juego.state = 2 // arranca el juego
+  juego.juegoEnd = Date.now() + (juego.duracion * 1000)
   io.in("juego").emit("juego:comienza", {
-    duracion: juego.duracion
+    duracion: juego.duracion,
+    timestamp: juego.juegoEnd
   });
   setTimeout(TerminarJuego, juego.duracion * 1000);
 }
