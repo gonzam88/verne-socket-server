@@ -195,6 +195,14 @@ socket.on("juego:termino", function(data) {
   // console.log("TERMINÓ EL JUEGO", data)
   app.sala.state = 3
 })
+
+socket.on("juego:inactividad", function(data) {
+  console.warn(data.error)
+  app.sala.state = 'err'
+  app.sala.errTxt = data.error
+})
+
+
 socket.on("juego:participacionMaxima", function(data) {
   console.warn("Error entrando a sala", "NO PODÉS VOLVER A PARTICIPAR", data)
   app.sala.state = 'err'

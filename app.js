@@ -24,7 +24,8 @@ require('./config/passport')(passport)
 //mongoose
 mongoose.connect('mongodb://localhost/test', {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false, // https://mongoosejs.com/docs/deprecations.html#findandmodify
   })
   .then(() => console.log('connected to db'))
   .catch((err) => console.log(err));
@@ -98,13 +99,15 @@ app.listen(process.env.EXPRESSPORT);
 // **************
 var juego = {
   personasPorTurno: 2,
-  countdown: 20, // en segundos, countdown cuando el juego está por arrancar
-  duracion: 60, // en segundos, duracion del juego
+  countdown: 6, // en segundos, countdown cuando el juego está por arrancar
+  duracion: 10, // en segundos, duracion del juego
   cooldown: 2, // en segundos, tiempo de espera antes de arrancar un nuevo juego
   state: 0,
   countdownEnd: 0, // timestamp de cuando termina el countdown
   juegoEnd: 0,
-  participacionesMaximas: 3, // cantidad de veces que el jugador puede participar. 0> infinito
+  participacionesMaximas: 0, // cantidad de veces que el jugador puede participar. 0> infinito
+  segundosInactividad: 5, // segundos que pueden pasar antes de echar a un jugador por inactividad
+  parametrosInactividad: ['color', 'button01', 'button02'], // Array de parametros enviados por el cliente que resetean el timer por inactividad
 }
 
 // states room juego
@@ -134,7 +137,7 @@ const User = require('./models/user');
 
 
 var players = []
-
+// var timerInactividad;
 
 io.on('connection', (socket) => {
   // user data from the socket.io passport middleware
@@ -225,7 +228,14 @@ io.on('connection', (socket) => {
           }
         })
       }
-      socket.broadcast.emit("otherUpdate", data) // Le aviso a los demas players conectados
+
+      // Le aviso a los demas players conectados
+      socket.broadcast.emit("otherUpdate", data)
+
+      // Si está jugando y es un parametro válido, cancelo el timer de inactividad
+      if(players[data.id].estaJugando && juego.parametrosInactividad.includes(data.parameter)){
+        ResetearTimerInactividad(socket)
+      }
     })
   }
 })
@@ -237,7 +247,7 @@ function PuedeIniciarJuego() {
     if (error) throw error;
 
     if (clients.length >= juego.personasPorTurno && juego.state == 0) {
-      console.log("Moviendo a los jugadores a la sala de Juego.")
+      console.log(`Moviendo a los jugadores a la sala de Juego. Empezando en ${juego.countdown} segundos.`)
       clients.forEach(function(client) {
         let clientSocket = io.sockets.sockets[client]
         clientSocket.leave("espera")
@@ -258,18 +268,28 @@ function PuedeIniciarJuego() {
 
 function IniciarJuego() {
   // TODO volver a chequear la cantidad de jugadores
-  console.log("empezó el juego")
+  console.log(`Empezó el juego. Duración ${juego.duracion} segundos`)
   juego.state = 2 // arranca el juego
   juego.juegoEnd = Date.now() + (juego.duracion * 1000)
   io.in("juego").emit("juego:comienza", {
     duracion: juego.duracion,
     timestamp: juego.juegoEnd
   });
+
+  io.in('juego').clients((error, clients) => {
+    if (error) throw error;
+    clients.forEach(function(client) {
+      let clientSocket = io.sockets.sockets[client]
+      ResetearTimerInactividad(clientSocket)
+      players[clientSocket.request.user._id].estaJugando = true
+    })
+  })
+
   setTimeout(TerminarJuego, juego.duracion * 1000);
 }
 
 function TerminarJuego() {
-  console.log("terminó el juego")
+  console.log("Terminó el juego")
   io.in("juego").emit("juego:termino");
   // vacio el room Juego
   io.in('juego').clients((error, clients) => {
@@ -285,21 +305,22 @@ function TerminarJuego() {
       }
 
       let userId = clientSocket.request.user._id
-      User.findOneAndUpdate({
-          _id: userId
-        }, {
+      User.findOneAndUpdate({_id: userId},
+        {
           $push: {
             participaciones: participacion
           }
-        },
-        function(error, success) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log(success);
-          }
-        });
-
+        }
+        // ,
+        // function(error, success) {
+        //   if (error) {
+        //     // console.log(error);
+        //   } else {
+        //     // console.log(success);
+        //   }
+        // }
+      );
+        players[userId].estaJugando = false
     })
   })
 
@@ -312,6 +333,20 @@ function CooldownJuegoTermino() {
   PuedeIniciarJuego()
 }
 
+function ResetearTimerInactividad(playerSocket){
+  let playerId = playerSocket.request.user._id
+  if(typeof(players[playerId].timerInactividad) !== 'undefined'){
+  clearTimeout(players[playerId].timerInactividad)
+  }
+  console.log(`iniciando timer de ${playerSocket.request.user.name}`)
+  players[playerId].timerInactividad = setTimeout(function(){
+    if(!players[playerId].estaJugando){ return }
+    // Pasó el tiempo máximo, echamos al jugador
+    console.log(`Echando a ${playerSocket.request.user.name} por inactividad`);
+    playerSocket.leave("juego")
+    playerSocket.emit("juego:inactividad", {error: "Fuiste echado por inactividad"});
+  }, juego.segundosInactividad * 1000);
 
+}
 
 console.log(`App is listening on port ${listener.address().port}`);
