@@ -32,6 +32,7 @@ var app = new Vue({
       duracionTxt: "",
       errTxt: "",
       avisoInactividad: false,
+      avisoEchado: false,
       permitirReconectar: false
     },
 
@@ -214,9 +215,11 @@ socket.on("juego:inactividad", function(data) {
   console.warn(data.error)
   app.sala.state = 'err'
   app.sala.errTxt = data.error
-  alert(data.error)
-  app.sala.permitirReconectar = typeof(data.permitirReconectar)!=='undefined' ? data.permitirReconectar : false
+  // alert(data.error)
   app.sala.avisoInactividad = false
+  app.sala.avisoEchado = true
+  app.sala.permitirReconectar = typeof(data.permitirReconectar)!=='undefined' ? data.permitirReconectar : false
+
 })
 
 

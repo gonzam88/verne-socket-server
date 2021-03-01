@@ -1,167 +1,172 @@
 <%- include('navbar'); %>
 <link rel="stylesheet" href="/experiencia-style.css" />
 
-    <div id="app" v-bind:style="{borderColor: color.hex}">
-      <div id="loading" :class="{loaded:loaded}">
-        <h1>Cargando...</h1></div>
+<div id="app" v-bind:style="{borderColor: color.hex}">
+  <div id="loading" :class="{loaded:loaded}">
+    <h1>Cargando...</h1>
+  </div>
 
 
 
-       <div class="tabs is-centered">
-        <ul>
-          <li :class="{'is-active':currentTab==1}"><a href="#pantalla1" @click="currentTab=1">Pantalla #1</a></li>
-          <li :class="{'is-active':currentTab==2}"><a href="#pantalla2"  @click="currentTab=2">Pantalla #2</a></li>
-          <li :class="{'is-active':currentTab==3}"><a href="#pantalla3"  @click="currentTab=3">Pantalla #3</a></li>
-          <li :class="{'is-active':currentTab==4}"><a href="#otres"  @click="currentTab=4">Otres</a></li>
-        </ul>
+  <div class="tabs is-centered">
+    <ul>
+      <li :class="{'is-active':currentTab==1}"><a href="#pantalla1" @click="currentTab=1">Pantalla #1</a></li>
+      <li :class="{'is-active':currentTab==2}"><a href="#pantalla2" @click="currentTab=2">Pantalla #2</a></li>
+      <li :class="{'is-active':currentTab==3}"><a href="#pantalla3" @click="currentTab=3">Pantalla #3</a></li>
+      <li :class="{'is-active':currentTab==4}"><a href="#otres" @click="currentTab=4">Otres</a></li>
+    </ul>
+  </div>
+
+  <div class="tab" :class="{active:currentTab==1}">
+    <!-- pantalla #1 -->
+    <div><label>ID</label> {{id}}</div>
+    <div id="colorContainer">
+      <label>Color</label> {{color.hex}}
+      <slider-picker v-model="color" @input="SendUpdate('color',color.hex)" />
+    </div>
+  </div>
+
+  <div class="tab" :class="{active:currentTab==2}">
+    <!-- pantalla #2 -->
+    <div class='sliders'>
+      <div>
+        <label for="slider01">slider01</label>
+        <input type="range" min="0" max="1" step="0.01" id="slider01" v-model="slider01" />
+        <input disabled v-model="slider01" style="width: 2em" />
       </div>
 
-      <div class="tab" :class="{active:currentTab==1}">
-        <!-- pantalla #1 -->
-        <div><label>ID</label> {{id}}</div>
-        <div id="colorContainer">
-          <label>Color</label> {{color.hex}}
-          <slider-picker
-            v-model="color"
-            @input="SendUpdate('color',color.hex)"
-          />
-        </div>
+      <div>
+        <label for="slider02">slider02</label>
+        <input type="range" min="0" max="1" step="0.01" id="slider02" v-model="slider02" />
+        <input disabled v-model="slider02" style="width: 2em" />
       </div>
 
-      <div class="tab" :class="{active:currentTab==2}">
-        <!-- pantalla #2 -->
-        <div  class='sliders'>
-          <div>
-            <label for="slider01">slider01</label>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              id="slider01"
-              v-model="slider01"
-            />
-            <input disabled v-model="slider01" style="width: 2em" />
-          </div>
-
-          <div>
-            <label for="slider02">slider02</label>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              id="slider02"
-              v-model="slider02"
-            />
-            <input disabled v-model="slider02" style="width: 2em" />
-          </div>
-
-          <div>
-            <label for="slider03">slider03</label>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              id="slider03"
-              v-model="slider03"
-            />
-            <input disabled v-model="slider03" style="width: 2em" />
-          </div>
-        </div>
-        <br>
-        <div class='buttons'>
-          <div class="btn button is-success" id="button01">
-            button01
-          </div>
-          <div class="btn button is-link" id="button02">
-            button02
-          </div>
-          <div class="btn button is-danger" id="button03">
-            button03
-          </div>
-        </div>
-      </div>
-
-      <div class="tab" :class="{active:currentTab==3}">
-        <!-- pantalla #3 -->
-        <fieldset class="pad" data-width="300" data-height="300">
-          <legend>XY Pad</legend>
-          x : <input name="x" value="27" /> y :
-          <input name="y" value="80" />
-        </fieldset>
-      </div>
-
-      <div class="tab" :class="{active:currentTab==4}">
-        <div class="othersData">
-          <pre>Players: {{players.length}}</pre>
-          <div class="list">
-            <div
-              class="item"
-              v-for="data in players"
-              v-bind:style="{borderColor: data.color}">
-              <pre><strong>id</strong> {{data.id}}</pre>
-              <pre><strong>nombre</strong> {{data.nombre}}</pre>
-              <pre><strong>color</strong> {{data.color}}</pre>
-
-              <pre ><strong>Pad X</strong> <span v-if="typeof(data.pad) != 'undefined'">{{data.pad[0]}}</span></pre>
-              <pre ><strong>Pad Y</strong> <span v-if="typeof(data.pad) != 'undefined'">{{data.pad[1]}}</span></pre>
-
-
-              <pre><strong>Slider01</strong> {{data.slider01}}</pre>
-              <pre><strong>Slider02</strong> {{data.slider02}}</pre>
-              <pre><strong>Slider03</strong> {{data.slider03}}</pre>
-
-              <pre><strong>Button01</strong> {{data.button01}}</pre>
-              <pre><strong>Button02</strong> {{data.button02}}</pre>
-              <pre><strong>Button03</strong> {{data.button03}}</pre>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div cass='estadoTurno'>
-        <div v-if="sala.state==0">
-          Esperando más jugadores
-        </div>
-        <div v-if="sala.state==1">
-          Comenzando juego en {{sala.countdownTxt}}
-        </div>
-        <div v-if="sala.state==2">
-          Tiempo restante {{sala.duracionTxt}}
-        </div>
-        <div v-if="sala.state==3">
-          Juego terminado.
-        </div>
-        <div v-if="sala.state=='err'">
-          {{sala.errTxt}}
-        </div>
-        <div v-if="sala.avisoInactividad" id='avisoInactividad'>
-          <article class="message is-danger">
-            <div class="message-header"><p>Atención</p></div>
-            <div class="message-body">Serás expulsado por <strong>inactividad.</strong></div>
-          </article>
-        </div>
-        <div v-if="sala.permitirReconectar">
-          <button @click="Reconectar()">Reconectar a juego</button>
-        </div>
-      </div>
-
-      <div id="conexionDuplicada" :class="{active:conexionDuplicada}" v-cloak>
-        <h1>Ya tenés el controlador abierto en otra pestaña</h1>
+      <div>
+        <label for="slider03">slider03</label>
+        <input type="range" min="0" max="1" step="0.01" id="slider03" v-model="slider03" />
+        <input disabled v-model="slider03" style="width: 2em" />
       </div>
     </div>
+    <br>
+    <div class='buttons'>
+      <div class="btn button is-success" id="button01">
+        button01
+      </div>
+      <div class="btn button is-link" id="button02">
+        button02
+      </div>
+      <div class="btn button is-danger" id="button03">
+        button03
+      </div>
+    </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
-    <script src="https://coso.cloud/jQuery-Kontrol/js/jquery.kontrol.js"></script>
+  <div class="tab" :class="{active:currentTab==3}">
+    <!-- pantalla #3 -->
+    <fieldset class="pad" data-width="300" data-height="300">
+      <legend>XY Pad</legend>
+      x : <input name="x" value="27" /> y :
+      <input name="y" value="80" />
+    </fieldset>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+  <div class="tab" :class="{active:currentTab==4}">
+    <div class="othersData">
+      <pre>Players: {{players.length}}</pre>
+      <div class="list">
+        <div class="item" v-for="data in players" v-bind:style="{borderColor: data.color}">
+          <pre><strong>id</strong> {{data.id}}</pre>
+          <pre><strong>nombre</strong> {{data.nombre}}</pre>
+          <pre><strong>color</strong> {{data.color}}</pre>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-color@2.7.1/dist/vue-color.min.js"></script>
-    <!-- vue-color -->
+          <pre><strong>Pad X</strong> <span v-if="typeof(data.pad) != 'undefined'">{{data.pad[0]}}</span></pre>
+          <pre><strong>Pad Y</strong> <span v-if="typeof(data.pad) != 'undefined'">{{data.pad[1]}}</span></pre>
 
-    <!-- import the webpage's client-side javascript file -->
-    <script src="/experiencia-script.js" defer></script>
+
+          <pre><strong>Slider01</strong> {{data.slider01}}</pre>
+          <pre><strong>Slider02</strong> {{data.slider02}}</pre>
+          <pre><strong>Slider03</strong> {{data.slider03}}</pre>
+
+          <pre><strong>Button01</strong> {{data.button01}}</pre>
+          <pre><strong>Button02</strong> {{data.button02}}</pre>
+          <pre><strong>Button03</strong> {{data.button03}}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div cass='estadoTurno'>
+    <div v-if="sala.state==0">
+      Esperando más jugadores
+    </div>
+    <div v-if="sala.state==1">
+      Comenzando juego en {{sala.countdownTxt}}
+    </div>
+    <div v-if="sala.state==2">
+      Tiempo restante {{sala.duracionTxt}}
+    </div>
+    <div v-if="sala.state==3">
+      Juego terminado.
+    </div>
+    <div v-if="sala.state=='err'">
+      {{sala.errTxt}}
+    </div>
+
+
+
+    <div v-if="sala.avisoInactividad" id='avisoInactividad'>
+      <article class="message is-danger">
+        <div class="message-header">
+          <p>Atención</p>
+        </div>
+        <div class="message-body">Serás expulsado por <strong>inactividad.</strong></div>
+      </article>
+    </div>
+    <div v-if="sala.permitirReconectar">
+      <button @click="Reconectar()">Reconectar a juego</button>
+    </div>
+  </div>
+
+  <!-- <div id="conexionDuplicada" :class="{active:conexionDuplicada}" v-cloak>
+    <h1>Ya tenés el controlador abierto en otra pestaña</h1>
+  </div> -->
+
+  <div class="modal" :class="{'is-active':conexionDuplicada}">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <article class="message is-warning is-medium">
+        <div class="message-body">
+          Ya tenés el controlador abierto en otra pestaña
+        </div>
+      </article>
+    </div>
+  </div>
+
+
+  <div class="modal" :class="{'is-active':sala.avisoEchado}">
+    <div class="modal-background" @click="sala.avisoEchado=false"></div>
+    <div class="modal-content">
+      <article class="message is-danger is-medium">
+        <div class="message-body">
+          Fuiste echado por inactividad.
+        </div>
+      </article>
+    </div>
+    <button class="modal-close is-large" aria-label="close" @click="sala.avisoEchado=false"></button>
+  </div>
+
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script src="https://coso.cloud/jQuery-Kontrol/js/jquery.kontrol.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-color@2.7.1/dist/vue-color.min.js"></script>
+<!-- vue-color -->
+
+<!-- import the webpage's client-side javascript file -->
+<script src="/experiencia-script.js" defer></script>
