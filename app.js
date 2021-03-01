@@ -148,9 +148,9 @@ io.on('connection', (socket) => {
 
     // busco si este ID ya está logueado en otro socket y lo echo (para que no esté dos veces el mismo usuario)
     for (var p in players) {
-      if(p == userId){
+      if (p == userId) {
         // Esta dos veces, le cierro la conexión al socket viejo
-        console.log("cerrando conexion de ",players[p].id, " socket id", players[p].socketid)
+        console.log("cerrando conexion de ", players[p].id, " socket id", players[p].socketid)
         io.sockets.sockets[players[p].socketid].emit("conexionDuplicada")
         io.sockets.sockets[players[p].socketid].disconnect()
       }
@@ -195,7 +195,9 @@ io.on('connection', (socket) => {
       socket.emit("juego:espera")
       PuedeIniciarJuego()
     } else {
-      socket.emit("juego:participacionMaxima", {error: `No podés jugar, ya participaste ${participaciones.length} veces.`})
+      socket.emit("juego:participacionMaxima", {
+        error: `No podés jugar, ya participaste ${participaciones.length} veces.`
+      })
     }
 
 
@@ -233,7 +235,7 @@ io.on('connection', (socket) => {
       socket.broadcast.emit("otherUpdate", data)
 
       // Si está jugando y es un parametro válido, cancelo el timer de inactividad
-      if(players[data.id].estaJugando && juego.parametrosInactividad.includes(data.parameter)){
+      if (players[data.id].estaJugando && juego.parametrosInactividad.includes(data.parameter)) {
         ResetearTimerInactividad(socket)
       }
     })
@@ -305,22 +307,14 @@ function TerminarJuego() {
       }
 
       let userId = clientSocket.request.user._id
-      User.findOneAndUpdate({_id: userId},
-        {
-          $push: {
-            participaciones: participacion
-          }
+      User.findOneAndUpdate({
+        _id: userId
+      }, {
+        $push: {
+          participaciones: participacion
         }
-        // ,
-        // function(error, success) {
-        //   if (error) {
-        //     // console.log(error);
-        //   } else {
-        //     // console.log(success);
-        //   }
-        // }
-      );
-        players[userId].estaJugando = false
+      });
+      players[userId].estaJugando = false
     })
   })
 
@@ -333,18 +327,23 @@ function CooldownJuegoTermino() {
   PuedeIniciarJuego()
 }
 
-function ResetearTimerInactividad(playerSocket){
+function ResetearTimerInactividad(playerSocket) {
   let playerId = playerSocket.request.user._id
-  if(typeof(players[playerId].timerInactividad) !== 'undefined'){
-  clearTimeout(players[playerId].timerInactividad)
+  if (typeof(players[playerId].timerInactividad) !== 'undefined') {
+    clearTimeout(players[playerId].timerInactividad)
   }
   console.log(`iniciando timer de ${playerSocket.request.user.name}`)
-  players[playerId].timerInactividad = setTimeout(function(){
-    if(!players[playerId].estaJugando){ return }
+  players[playerId].timerInactividad = setTimeout(function() {
+    if (!players[playerId].estaJugando) {
+      return
+    }
     // Pasó el tiempo máximo, echamos al jugador
     console.log(`Echando a ${playerSocket.request.user.name} por inactividad`);
     playerSocket.leave("juego")
-    playerSocket.emit("juego:inactividad", {error: "Fuiste echado por inactividad"});
+    playerSocket.emit("juego:inactividad", {
+      error: "Fuiste echado por inactividad"
+    });
+    players[playerId].estaJugando = false
   }, juego.segundosInactividad * 1000);
 
 }
