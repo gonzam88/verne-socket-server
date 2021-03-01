@@ -18,7 +18,6 @@ var app = new Vue({
     currentTab: 1,
 
     id: -1,
-    cantPlayers: 0,
     players: [],
 
     color: defaultColor,
@@ -67,7 +66,6 @@ var app = new Vue({
     newPlayer: function(data) {
       console.log("newPlayer", data);
       this.players.push(data);
-      this.cantPlayers++;
     },
 
     deletePlayer: function(data) {
@@ -78,8 +76,6 @@ var app = new Vue({
           return true; // stop searching
         }
       });
-
-      app.cantPlayers--;
     },
 
     SendUpdate: function(_parameter, _value) {
@@ -168,7 +164,7 @@ socket.on("newPlayer", function(data) {
 
 socket.on("deletePlayer", function(data) {
   // Un player se fue y lo borro de la lista
-  app.deletePlayer(data);
+  app.deletePlayer(data.userId);
 });
 
 socket.on("otherUpdate", function(data) {

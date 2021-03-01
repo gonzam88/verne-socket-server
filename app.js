@@ -170,7 +170,7 @@ io.on('connection', (socket) => {
       id: userId,
       nombre: socket.request.user.name,
       color: socket.request.user.color,
-      socketid: socket.id
+      socketid: socket.id,
     }
 
     //socket.emit("id", userId) // Le aviso cual es su id
@@ -193,7 +193,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       delete players[userId] // Elimino al player del array
-      socket.broadcast.emit("deletePlayer", userId) // Les aviso al resto que este se fue
+      socket.broadcast.emit("deletePlayer", {userId:userId}) // Les aviso al resto que este se fue
 
       console.log("Usuario desconectado", "Usuarios conectados", Object.keys(players).length)
       // console.log(players)
