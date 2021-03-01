@@ -135,6 +135,9 @@
         <div v-if="sala.state=='err'">
           {{sala.errTxt}}
         </div>
+        <div v-if="sala.permitirReconectar">
+          <button @click="Reconectar()">Reconectar a juego</button>
+        </div>
       </div>
 
 

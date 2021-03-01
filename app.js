@@ -188,19 +188,7 @@ io.on('connection', (socket) => {
     // console.log(players)
 
     // agrego este nuevo jugador a la sala de espera
-    // TODO chequear si cumple requisito para jugar
-    participaciones = socket.request.user.participaciones
-    if (juego.participacionesMaximas == 0 || participaciones.length < juego.participacionesMaximas) {
-      socket.join('espera');
-      socket.emit("juego:espera")
-      PuedeIniciarJuego()
-    } else {
-      socket.emit("juego:participacionMaxima", {
-        error: `No podés jugar, ya participaste ${participaciones.length} veces.`
-      })
-    }
-
-
+    AgregarJugadorASalaDeEspera(socket)
 
     socket.on('disconnect', () => {
       delete players[userId] // Elimino al player del array
@@ -239,6 +227,11 @@ io.on('connection', (socket) => {
         ResetearTimerInactividad(socket)
       }
     })
+
+    socket.on("juego:reconectar", (data) => {
+      AgregarJugadorASalaDeEspera(socket)
+    })
+
   }
 })
 
@@ -341,11 +334,27 @@ function ResetearTimerInactividad(playerSocket) {
     console.log(`Echando a ${playerSocket.request.user.name} por inactividad`);
     playerSocket.leave("juego")
     playerSocket.emit("juego:inactividad", {
-      error: "Fuiste echado por inactividad"
+      error: "Fuiste echado por inactividad",
+      permitirReconectar: true
     });
     players[playerId].estaJugando = false
   }, juego.segundosInactividad * 1000);
 
+}
+
+
+
+function AgregarJugadorASalaDeEspera(_socket){
+  participaciones = _socket.request.user.participaciones
+  if (juego.participacionesMaximas == 0 || participaciones.length < juego.participacionesMaximas) {
+    _socket.join('espera');
+    _socket.emit("juego:espera")
+    PuedeIniciarJuego()
+  } else {
+    _socket.emit("juego:participacionMaxima", {
+      error: `No podés jugar, ya participaste ${participaciones.length} veces.`
+    })
+  }
 }
 
 console.log(`App is listening on port ${listener.address().port}`);

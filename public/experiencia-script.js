@@ -30,7 +30,8 @@ var app = new Vue({
       countdownTxt: "",
       duracionTs: 0,
       duracionTxt: "",
-      errTxt: ""
+      errTxt: "",
+      permitirReconectar: false
     },
 
 
@@ -110,6 +111,12 @@ var app = new Vue({
       if(this.sala.state == 2){
         setTimeout(this.TickDuracionTimer, 400);
       }
+    },
+    Reconectar: function(){
+      this.sala.permitirReconectar=false
+      console.log("reconectando")
+      socket.emit("juego:reconectar", { id: this.id });
+
     }
   },
   mounted: function() {
@@ -200,6 +207,7 @@ socket.on("juego:inactividad", function(data) {
   console.warn(data.error)
   app.sala.state = 'err'
   app.sala.errTxt = data.error
+  app.sala.permitirReconectar = typeof(data.permitirReconectar)!=='undefined' ? data.permitirReconectar : false
 })
 
 
@@ -208,6 +216,7 @@ socket.on("juego:participacionMaxima", function(data) {
   app.sala.state = 'err'
   console.log(data)
   app.sala.errTxt = data.error
+  app.sala.permitirReconectar = typeof(data.permitirReconectar)!=='undefined' ? data.permitirReconectar : false
 })
 
 
