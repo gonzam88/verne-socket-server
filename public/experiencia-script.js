@@ -14,6 +14,7 @@ var app = new Vue({
     "slider-picker": colorSlider
   },
   data: {
+    loaded: false,
     showOthers: false,
     currentTab: 1,
 
@@ -154,6 +155,7 @@ socket.on("loginData", function(data) {
     a: 1,
     hex: data.color
   })
+  app.loaded = true
 })
 
 socket.on("newPlayer", function(data) {

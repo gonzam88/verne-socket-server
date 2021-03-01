@@ -2,6 +2,8 @@
 <link rel="stylesheet" href="/experiencia-style.css" />
 
     <div id="app" v-bind:style="{borderColor: color.hex}">
+      <div id="loading" :class="{loaded:loaded}">
+        <h1>Cargando...</h1></div>
 
 
 
@@ -146,11 +148,6 @@
         </div>
       </div>
 
-
-      <div class="container" v-cloak>
-
-
-      </div>
       <div id="conexionDuplicada" :class="{active:conexionDuplicada}" v-cloak>
         <h1>Ya tenés el controlador abierto en otra pestaña</h1>
       </div>

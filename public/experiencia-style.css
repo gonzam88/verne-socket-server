@@ -1,5 +1,19 @@
 [v-cloak] { display: none; }
-
+#loading{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: #fff;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#loading.loaded{
+  display: none;
+}
 body {
   font-family: sans-serif;
   font-size: 1em;
