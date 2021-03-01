@@ -100,13 +100,14 @@ app.listen(process.env.EXPRESSPORT);
 var juego = {
   personasPorTurno: 2,
   countdown: 6, // en segundos, countdown cuando el juego está por arrancar
-  duracion: 10, // en segundos, duracion del juego
+  duracion: 20, // en segundos, duracion del juego
   cooldown: 2, // en segundos, tiempo de espera antes de arrancar un nuevo juego
   state: 0,
   countdownEnd: 0, // timestamp de cuando termina el countdown
   juegoEnd: 0,
   participacionesMaximas: 0, // cantidad de veces que el jugador puede participar. 0> infinito
-  segundosInactividad: 5, // segundos que pueden pasar antes de echar a un jugador por inactividad
+  segundosAvisoInactividad: 5,
+  segundosInactividad: 10, // segundos que pueden pasar antes de echar a un jugador por inactividad
   parametrosInactividad: ['color', 'button01', 'button02'], // Array de parametros enviados por el cliente que resetean el timer por inactividad
 }
 
@@ -225,6 +226,10 @@ io.on('connection', (socket) => {
       // Si está jugando y es un parametro válido, cancelo el timer de inactividad
       if (players[data.id].estaJugando && juego.parametrosInactividad.includes(data.parameter)) {
         ResetearTimerInactividad(socket)
+        if(players[data.id].avisadoInactividad ){
+          socket.emit("juego:avisoInactividad:off")
+          players[data.id].avisadoInactividad = false
+        }
       }
     })
 
@@ -322,10 +327,23 @@ function CooldownJuegoTermino() {
 
 function ResetearTimerInactividad(playerSocket) {
   let playerId = playerSocket.request.user._id
+  if (typeof(players[playerId].timerAvisoInactividad) !== 'undefined') {
+    clearTimeout(players[playerId].timerAvisoInactividad)
+  }
   if (typeof(players[playerId].timerInactividad) !== 'undefined') {
     clearTimeout(players[playerId].timerInactividad)
   }
-  console.log(`iniciando timer de ${playerSocket.request.user.name}`)
+  // console.log(`iniciando timer de ${playerSocket.request.user.name}`)
+  // inicio timer de preaviso inactividad
+  players[playerId].timerAvisoInactividad = setTimeout(function() {
+    if (!players[playerId].estaJugando) {
+      return
+    }
+    playerSocket.emit("juego:avisoInactividad:on")
+    players[playerId].avisadoInactividad = true
+  }, juego.segundosAvisoInactividad * 1000)
+
+  // Inicio timer de inactividad
   players[playerId].timerInactividad = setTimeout(function() {
     if (!players[playerId].estaJugando) {
       return

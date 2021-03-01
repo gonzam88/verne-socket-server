@@ -135,6 +135,12 @@
         <div v-if="sala.state=='err'">
           {{sala.errTxt}}
         </div>
+        <div v-if="sala.avisoInactividad" id='avisoInactividad'>
+          <article class="message is-danger">
+            <div class="message-header"><p>Atención</p></div>
+            <div class="message-body">Serás expulsado por <strong>inactividad.</strong></div>
+          </article>
+        </div>
         <div v-if="sala.permitirReconectar">
           <button @click="Reconectar()">Reconectar a juego</button>
         </div>

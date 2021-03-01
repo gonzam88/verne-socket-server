@@ -31,6 +31,7 @@ var app = new Vue({
       duracionTs: 0,
       duracionTxt: "",
       errTxt: "",
+      avisoInactividad: false,
       permitirReconectar: false
     },
 
@@ -201,13 +202,23 @@ socket.on("juego:comienza", function(data) {
 socket.on("juego:termino", function(data) {
   // console.log("TERMINÓ EL JUEGO", data)
   app.sala.state = 3
+  app.sala.avisoInactividad = false
+})
+
+socket.on("juego:avisoInactividad:on", function(data) {
+  app.sala.avisoInactividad = true
+})
+socket.on("juego:avisoInactividad:off", function(data) {
+  app.sala.avisoInactividad = false
 })
 
 socket.on("juego:inactividad", function(data) {
   console.warn(data.error)
   app.sala.state = 'err'
   app.sala.errTxt = data.error
+  alert(data.error)
   app.sala.permitirReconectar = typeof(data.permitirReconectar)!=='undefined' ? data.permitirReconectar : false
+  app.sala.avisoInactividad = false
 })
 
 

@@ -1,3 +1,5 @@
+[v-cloak] { display: none; }
+
 body {
   font-family: sans-serif;
   font-size: 1em;
@@ -139,4 +141,9 @@ label {
   justify-content: space-evenly;
   align-items: center;
 }
-[v-cloak] { display: none; }
+
+#avisoInactividad{
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}
