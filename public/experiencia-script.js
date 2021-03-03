@@ -1,4 +1,27 @@
 var socket = io();
+
+var ts = timesync.create({
+  server: socket,
+  interval: 5000
+});
+
+ts.send = function(socket, data, timeout) {
+  //console.log('send', data);
+  return new Promise(function(resolve, reject) {
+    var timeoutFn = setTimeout(reject, timeout);
+
+    socket.emit('timesync', data, function() {
+      clearTimeout(timeoutFn);
+      resolve();
+    });
+  });
+};
+
+socket.on('timesync', function(data) {
+  //console.log('receive', data);
+  ts.receive(null, data);
+});
+
 socket.emit("logged", "holis");
 
 var colorSlider = VueColor.Slider;
@@ -99,22 +122,24 @@ var app = new Vue({
       });
     },
 
-    TickCountdownTimer: function(){
+    TickCountdownTimer: function() {
       this.sala.countdownTxt = FormatTimeDiff(this.sala.countdownTs)
-      if(this.sala.state == 1){
+      if (this.sala.state == 1) {
         setTimeout(this.TickCountdownTimer, 400);
       }
     },
-    TickDuracionTimer: function(){
+    TickDuracionTimer: function() {
       this.sala.duracionTxt = FormatTimeDiff(this.sala.duracionTs)
-      if(this.sala.state == 2){
+      if (this.sala.state == 2) {
         setTimeout(this.TickDuracionTimer, 400);
       }
     },
-    Reconectar: function(){
-      this.sala.permitirReconectar=false
+    Reconectar: function() {
+      this.sala.permitirReconectar = false
       console.log("reconectando")
-      socket.emit("juego:reconectar", { id: this.id });
+      socket.emit("juego:reconectar", {
+        id: this.id
+      });
 
     }
   },
@@ -218,7 +243,7 @@ socket.on("juego:inactividad", function(data) {
   // alert(data.error)
   app.sala.avisoInactividad = false
   app.sala.avisoEchado = true
-  app.sala.permitirReconectar = typeof(data.permitirReconectar)!=='undefined' ? data.permitirReconectar : false
+  app.sala.permitirReconectar = typeof(data.permitirReconectar) !== 'undefined' ? data.permitirReconectar : false
 
 })
 
@@ -228,7 +253,7 @@ socket.on("juego:participacionMaxima", function(data) {
   app.sala.state = 'err'
   console.log(data)
   app.sala.errTxt = data.error
-  app.sala.permitirReconectar = typeof(data.permitirReconectar)!=='undefined' ? data.permitirReconectar : false
+  app.sala.permitirReconectar = typeof(data.permitirReconectar) !== 'undefined' ? data.permitirReconectar : false
 })
 
 
@@ -245,12 +270,12 @@ socket.on("clickedBut", function(data){
   console.log("Server Request",data)
 })*/
 
-function FormatTimeDiff(endTime){
-  let duration = moment.duration(endTime - Date.now())
+function FormatTimeDiff(endTime) {
+  let duration = moment.duration(endTime - ts.now())
   let mins = duration.minutes()
   let secs = duration.seconds()
-  secs = secs > 9 ? secs : "0"+secs
-  return  mins + ":" + secs;
+  secs = secs > 9 ? secs : "0" + secs
+  return mins + ":" + secs;
 }
 
 // admin url get

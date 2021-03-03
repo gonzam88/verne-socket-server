@@ -17,6 +17,7 @@ var server = http.createServer(app);
 var port = process.env.PORT;
 var listener = server.listen(port);
 var io = require('socket.io')(server);
+var timesyncServer = require('timesync/server');
 // TODO agregar CORS al servidor de socket
 
 //passport config:
@@ -237,8 +238,15 @@ io.on('connection', (socket) => {
       AgregarJugadorASalaDeEspera(socket)
     })
 
-  }
-})
+    socket.on('timesync', function (data) {
+      socket.emit('timesync', {
+        id: data && 'id' in data ? data.id : null,
+        result: Date.now()
+      });
+    });
+
+  } // usuario logueado
+}) // on connection
 
 
 
